@@ -75,9 +75,9 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-
             .on("drag", dragged)
             .on("end", dragended));
 
-    node.each(d =>
+    node.each(function (d) {
         buildNode(d3.select(this), nodeScale(d.radius), d.pieChart, uniqueCountry, colorCustom, d.id)
-    );
+    });
 
     simulation
         .nodes(graph.nodes)
@@ -86,7 +86,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-
     simulation.force("link")
         .links(graph.links);
 
-    const ticked = () => {
+    function ticked() {
         link
             .attr("x1", d => d.source.x)
             .attr("y1", d => d.source.y)
@@ -104,18 +104,18 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-
             .attr("y", d => d.y);
     }
 
-    const dragstarted = (d) => {
+    function dragstarted(d) {
         if (!d3.event.active) simulation.alphaTarget(0.3).restart();
         d.fx = d.x;
         d.fy = d.y;
     }
 
-    const dragged = (d) => {
+    function dragged(d) {
         d.fx = d3.event.x;
         d.fy = d3.event.y;
     }
 
-    const dragended = (d) => {
+    function dragended(d) {
         if (!d3.event.active)
             simulation.alphaTarget(0);
         d.fx = null;
