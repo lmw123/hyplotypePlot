@@ -1,0 +1,127 @@
+<link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/bootstrap-table/1.16.0/bootstrap-table.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+
+<style>
+    a {
+        cursor: pointer;
+    }
+
+    body {
+        margin: 0;
+    }
+
+
+    .main-container {
+        display: flex;
+        height: 100%;
+    }
+
+    .sidebar-panel {
+        border: 1px solid gray;
+        flex: 1;
+        display: flex;
+        overflow: scroll;
+        flex-direction: column;
+    }
+
+    .plot-panel {
+        display: flex;
+        flex-direction: column;
+        flex: 3;
+    }
+
+    .node-table {
+        border: 1px solid gray;
+        flex: 1;
+        overflow: scroll
+    }
+
+    .link-table {
+        border: 1px solid gray;
+        flex: 1;
+        overflow: scroll;
+    }
+
+    .legend-panel {
+        border: 1px solid gray;
+        flex: 1;
+        overflow: scroll
+    }
+
+    .network-panel {
+        border: 1px solid gray;
+        flex: 3;
+        overflow: scroll
+    }
+</style>
+
+<div class="main-container">
+
+    <div class="sidebar-panel">
+
+        <div class="node-table">
+            <h4 style="text-align: center;" id="nodeInfo">Virus</h4>
+            <div class="table-responsive">
+                <table id="nodeTable" class="table"></table>
+            </div>
+        </div>
+
+        <div class="link-table">
+            <h4 style="text-align: center;" id="linkInfo">Links</h4>
+            <div class="table-responsive">
+                <table id="linkTable" class="table"></table>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="plot-panel">
+
+        <div class="network-panel" style="position: relative; ">
+            <i class="fas fa-question-circle" style="position: absolute; top: 20px; left: 20px; font-size: 25px;"
+                data-trigger="hover" data-container="body" data-toggle="popover" data-placement="bottom"
+                data-content="TODO: Something about the network">
+            </i>
+
+            <i class="fas fa-sliders-h" style="position: absolute; top: 20px; right: 20px; font-size: 25;"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                <form class="dropdown-menu p-4" style="width: 400px;">
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Region</label>
+                        <select class="form-control" id="exampleFormControlSelect1"  data-stopPropagation="true">
+                            <option data-stopPropagation="true">Global</option>
+                            <option data-stopPropagation="true">Continents</option>
+                            <option data-stopPropagation="true">China</option>
+                          </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleDropdownFormPassword2">Date</label>
+                        <input data-stopPropagation="true" type="password" class="form-control" id="exampleDropdownFormPassword2"
+                            placeholder="TODO">
+                    </div>
+                    </form>
+
+            </i>
+            <div
+                style="text-align: center; width: 30px; border: 1px solid gray; position: absolute; bottom: 20px; right: 20px; ">
+                <a id="zoomIn">
+                    <i class="fas fa-search-plus" style="font-size: 25px;"></i>
+                </a>
+                <hr style="margin: 5px 0px; width: 30px;">
+                <a id="zoomOut">
+                    <i class="fas fa-search-minus" style="font-size: 25px;"></i>
+                </a>
+            </div>
+
+            <div id="plot"></div>
+        </div>
+
+        <div class="legend-panel">
+
+        </div>
+    </div>
+
+</div>
+
