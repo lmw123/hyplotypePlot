@@ -1,26 +1,26 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: Mengwei Li
+ * @Date: 2020-04-02 10:03:38
+ * @LastEditors: Mengwei Li
+ * @LastEditTime: 2020-04-03 11:49:44
+ */
+
 import * as d3 from 'd3';
 import { getUniqueCountry } from './dataProcess';
 import { buildNode } from './buildNode';
-import { nodeLink } from './nodeLink';
+import { nodeLink, nodeLinkScale } from './nodeLink';
+import { defaultColor, bootstrapBehaviors } from './plotConfig';
+import { refreshNodeTable } from './nodeTable';
+import { refreshLinkTable } from './linkTable';
 import 'bootstrap';
-import 'bootstrap-table'
+import 'bootstrap-table';
 
 d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-26&area=world").then(graph => {
 
-    const colorCustom = ["#d62728", "#9467bd", "#8c564b", "#e377c2", "#1c7f7c",
-        "#7f7f7f", "#bcbd22", "#17becf", "#1f77b4",
-        "#ff7f0e", "#2ca02c", '#d48265', '#2f4554',
-        '#61a0a8', '#91c7ae', '#749f83', '#ca8622',
-        '#bd4829', '#546570', "#606dff", "#1d83f4",
-        "#2f67b9", "#4548f4", "#123754", "#7f7f7f",
-        "#f468c2", "#ffeb3b", "#346270", "#ff2f23",
-        "#cf9e19", "#2507f4", "#f427ab", "#D84E0C",
-        "#9c0df4", "#2b1a7f", "#ffeb3b", "#699f2c",
-        "#ff19ec", "#75fff3", "#ca84ff", "#ff0c1b",
-        "#1bff2c", "#b695f4", "#197f59", "#4548f4",
-        "#419f42", "#2325f4", "rgba(62,21,60,0.91)"
-    ];
-
+    let colorCustom = defaultColor;
+    let { lineScale, nodeScale } = nodeLinkScale(graph);
     let uniqueCountry = getUniqueCountry(graph);
 
     let width = $('.network-panel').width();
@@ -29,7 +29,6 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-
     let svg = d3.select("#plot").append("svg")
         .attr("width", width)
         .attr("height", height);
-
 
     function zoomed() {
         plotCanvas.attr("transform", d3.event.transform);
@@ -49,15 +48,6 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-
 
     d3.select("#zoomOut")
         .on("click", () => plotCanvas.transition().call(zoom.scaleBy, 0.8))
-
-
-    var lineScale = d3.scaleLinear()
-        .domain(d3.extent(graph.links.map(a => a.distance)))
-        .range([30, 180]);
-
-    var nodeScale = d3.scaleSqrt()
-        .domain(d3.extent(graph.nodes.map(a => a.radius)))
-        .range([3, 50]);
 
     let simulation = d3.forceSimulation()
         .force("link", d3.forceLink()
@@ -122,54 +112,10 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-
         d.fy = null;
     }
 
-    let nodeInfo = []
-    graph.nodes.forEach(c => nodeInfo = nodeInfo.concat(c.Virus))
-    $("#nodeInfo").text("Virus (" + nodeInfo.length + ")")
-    $("#nodeTable")
-        .bootstrapTable({
-            columns: [{
-                field: 'acc',
-                title: 'Acc',
-                sortable: true,
-                formatter: (value) => "<a target='__blank' href='https://bigd.big.ac.cn/ncov/genome/accession?q=" + value + "'>" + value + "</a>"
-            }, {
-                field: 'date',
-                title: 'Date',
-                sortable: true
-            }, {
-                field: 'loci',
-                title: 'Loci',
-                sortable: true
-            }],
-            data: nodeInfo
-        })
+    refreshNodeTable(graph)
+    refreshLinkTable(graph)
 
-    $("#linkInfo").text("Links (" + graph.links.length + ")")
-    $("#linkTable")
-        .bootstrapTable({
-            columns: [{
-                field: 'source',
-                title: 'Source',
-                sortable: true,
-                formatter: value => value.id
-            }, {
-                field: 'target',
-                title: 'Target',
-                sortable: true,
-                formatter: value => value.id
-            }, {
-                field: 'distance',
-                title: 'Distance',
-                sortable: true
-            }],
-            data: graph.links
-        })
-
-    $(function () {
-        $('[data-toggle="popover"]').popover()
-    })
+    bootstrapBehaviors()
+    
 })
 
-$(".dropdown-menu").on("click", "[data-stopPropagation]", e => {
-    e.stopPropagation()
-})

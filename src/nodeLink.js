@@ -1,4 +1,24 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: Mengwei Li
+ * @Date: 2020-04-02 14:46:45
+ * @LastEditors: Mengwei Li
+ * @LastEditTime: 2020-04-03 11:30:25
+ */
 import * as d3 from 'd3';
+
+export const nodeLinkScale = (graph) => {
+    let lineScale = d3.scaleLinear()
+        .domain(d3.extent(graph.links.map(a => a.distance)))
+        .range([30, 180]);
+
+    let nodeScale = d3.scaleSqrt()
+        .domain(d3.extent(graph.nodes.map(a => a.radius)))
+        .range([3, 50]);
+
+    return {lineScale, nodeScale}
+}
 
 export const nodeLink = (graph, plotCanvas) => {
     let link = plotCanvas

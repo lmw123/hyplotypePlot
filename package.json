@@ -4,11 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack-dev-server --progress --colors",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "webpack-dev-server --progress --colors",
+    "build": "webpack --mode production"
   },
   "author": "Mengwei Li",
+  "contributors": ["Anke Wang"],
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lmw123/hyplotypePlot.git"
+  },
   "dependencies": {
     "bootstrap": "^4.4.1",
     "bootstrap-table": "^1.16.0",
