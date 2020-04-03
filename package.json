@@ -8,7 +8,9 @@
     "build": "webpack --mode production"
   },
   "author": "Mengwei Li",
-  "contributors": ["Anke Wang"],
+  "contributors": [
+    "Anke Wang"
+  ],
   "license": "ISC",
   "repository": {
     "type": "git",
@@ -18,7 +20,8 @@
     "bootstrap": "^4.4.1",
     "bootstrap-table": "^1.16.0",
     "d3": "^5.15.1",
-    "jquery": "^3.4.1"
+    "jquery": "^3.4.1",
+    "select2": "^4.0.13"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

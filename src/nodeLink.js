@@ -4,18 +4,21 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 14:46:45
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-03 11:30:25
+ * @LastEditTime: 2020-04-03 21:20:47
  */
 import * as d3 from 'd3';
+import { nodeSizeRange, linkSizeRange } from './plotConfig'
 
 export const nodeLinkScale = (graph) => {
-    let lineScale = d3.scaleLinear()
+
+    let lineScale = d3.scalePow()
+        .exponent(0.5)
         .domain(d3.extent(graph.links.map(a => a.distance)))
-        .range([30, 180]);
+        .range(linkSizeRange);
 
     let nodeScale = d3.scaleSqrt()
         .domain(d3.extent(graph.nodes.map(a => a.radius)))
-        .range([3, 50]);
+        .range(nodeSizeRange);
 
     return {lineScale, nodeScale}
 }
@@ -26,9 +29,7 @@ export const nodeLink = (graph, plotCanvas) => {
         .selectAll("line")
         .data(graph.links)
         .enter().append("line")
-        .attr("stroke-width", function (d) {
-            return Math.log(d.distance) + 1;
-        })
+        .attr("stroke-width", 0.5)
         .attr("stroke", "#999")
         .on("mouseover", function (d) {
             d3.select("#info")
