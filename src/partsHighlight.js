@@ -7,9 +7,17 @@
  * @LastEditTime: 2020-04-04 14:28:08
  */
 
-
 import * as d3 from 'd3';
 
+/**
+ * @name: fadeReset
+ * @description: fadeReset
+ * @param1: {
+ *      node and link in graph
+ *      }
+ * @return: null
+ * @detail: 
+ */
 export const fadeReset = (allNodes, allLinks) => {
 
     allNodes.style('stroke-opacity', 1);
@@ -20,8 +28,10 @@ export const fadeReset = (allNodes, allLinks) => {
  * @name: nodeHighlight
  * @description: 点击node或者搜索节点之后的高亮行为，需要考虑多节点选择问题
  * @param1: {
- *      node:"节点的id或者其他属性",
- * 
+ *      allNodes -- node
+ *      allLinks -- link 
+ *      nodesID -- node.id 
+ *      opacity -- set opacity
  *      }
  * @return: null
  * @detail: 
@@ -62,7 +72,10 @@ export const nodeHighlight = (allNodes, allLinks, nodesID, opacity) => {
  * @name: linkHighlight
  * @description: 点击link之后的高亮行为
  * @param1: {
- *      link:"选择的link",
+ *      allNodes -- node
+ *      allLinks -- link 
+ *      link -- selected link 
+ *      opacity -- set opacity
  *      }
  * @return: null
  * @detail: 

@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 14:46:45
  * @LastEditors: Anke Wang
- * @LastEditTime: 2020-04-04 14:45:39
+ * @LastEditTime: 2020-04-04 15:17:43
  */
 
 import * as d3 from 'd3';
@@ -12,7 +12,6 @@ import { nodeSizeRange, linkSizeRange } from './plotConfig'
 import { nodeHighlight, linkHighlight } from './partsHighlight'
 
 export const nodeLinkScale = (graph) => {
-
     
     let lineScale = d3.scalePow()
         .exponent(0.5)
@@ -51,7 +50,8 @@ export const nodeLink = (graph, plotCanvas) => {
             return d.radius;
         })
 
-
+    // modify click reaction of link/node
+    
     link.on("click", d => {linkHighlight(node,link,d,0.2)})
     node.on("click", d => {nodeHighlight(node,link,d.id,0.2)})
     
