@@ -3,8 +3,8 @@
  * @version: 
  * @Author: Anke Wang
  * @Date: 2020-04-03 15:08:55
- * @LastEditors: Anke Wang
- * @LastEditTime: 2020-04-04 14:28:08
+ * @LastEditors: Mengwei Li
+ * @LastEditTime: 2020-04-04 18:31:56
  */
 
 import * as d3 from 'd3';
@@ -53,6 +53,7 @@ export const nodeHighlight = (allNodes, allLinks, nodesID, opacity) => {
             {
                 element.style("opacity", "1");
                 allLinks.style('stroke-opacity', o => (o.source.id === nodesID || o.target.id === nodesID ? 1 : opacity));
+                allLinks.style('stroke', o => (o.source.id === nodesID || o.target.id === nodesID ? "#ffc107" : "#999"));
             }
         }
         else

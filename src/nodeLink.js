@@ -3,8 +3,8 @@
  * @version: 
  * @Author: Mengwei Li
  * @Date: 2020-04-02 14:46:45
- * @LastEditors: Anke Wang
- * @LastEditTime: 2020-04-04 15:17:43
+ * @LastEditors: Mengwei Li
+ * @LastEditTime: 2020-04-04 18:27:53
  */
 
 import * as d3 from 'd3';
@@ -34,10 +34,6 @@ export const nodeLink = (graph, plotCanvas) => {
         .enter().append("line")
         .attr("stroke-width", 0.5)
         .attr("stroke", "#999")
-        .on("mouseover", function (d) {
-            d3.select("#info")
-                .text("distance: " + d.distance)
-        })
     
 
     let node = plotCanvas
