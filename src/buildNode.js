@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: Mengwei Li
+ * @Date: 2020-04-02 14:18:49
+ * @LastEditors: Mengwei Li
+ * @LastEditTime: 2020-04-04 16:09:33
+ */
 import * as d3 from 'd3';
 
 const drawParentCircle = (nodeElement, radius, id) => {
@@ -29,8 +37,8 @@ const drawPieChart = (nodeElement, radius, percentages, uniqueCountry, colorCust
                 startAngle: Math.PI * 2 * percentToDraw / 100,
                 endAngle: Math.PI * 2 * (percentToDraw + percentages[p].percent) / 100
             }))
-            .attr('fill', colorCustom[uniqueCountry.map(a => a.country).indexOf(percentages[p].color)])
-            .attr("stroke", colorCustom[uniqueCountry.map(a => a.country).indexOf(percentages[p].color)])
+            .attr('fill', colorCustom[uniqueCountry.map(a => a.name).indexOf(percentages[p].color)])
+            .attr("stroke", colorCustom[uniqueCountry.map(a => a.name).indexOf(percentages[p].color)])
             .attr("class", percentages[p].color)
             .on("mouseleave", d => {
                 d3.select("#test").remove()

@@ -4,17 +4,18 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:38
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-03 22:43:54
+ * @LastEditTime: 2020-04-04 16:38:41
  */
-
+import './css/index.css'
 import * as d3 from 'd3';
-import { getUniqueCountry } from './dataProcess';
+import { getUniqueCountry, getUniqueDate } from './dataProcess';
 import { buildNode } from './buildNode';
 import { nodeLink, nodeLinkScale } from './nodeLink';
 import { defaultColor, bootstrapBehaviors, linkSizeRange } from './plotConfig';
 import { refreshNodeTable } from './nodeTable';
 import { refreshLinkTable } from './linkTable';
-import { formatSelectData } from './search'
+import { formatSelectData, globalSearch } from './search';
+import { drawCountryPie } from './countryPie'
 import 'bootstrap';
 import 'bootstrap-table';
 import 'select2';
@@ -25,6 +26,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-
     let { lineScale, nodeScale, lineScale2 } = nodeLinkScale(graph);
     let uniqueCountry = getUniqueCountry(graph);
 
+    
     let width = $('.network-panel').width();
     let height = $('.network-panel').height();
 
@@ -45,7 +47,11 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-
         .on("wheel.zoom", null)
         .on("dblclick.zoom", null);
 
-        plotCanvas.transition().call(zoom.scaleBy, 2)
+    plotCanvas.transition().call(zoom.scaleBy, 2)
+
+    d3.select("#zoomReset")
+        .on("click", () => plotCanvas.transition().call(zoom.scaleTo, 2))
+        
     d3.select("#zoomIn")
         .on("click", () => plotCanvas.transition().call(zoom.scaleBy, 1.2))
 
@@ -59,7 +65,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-
         .force("charge", d3.forceManyBody().distanceMax(linkSizeRange[1]).distanceMin(linkSizeRange[0]).strength(-1))
         .force("center", d3.forceCenter(width / 2, height / 2))
         .force('x', d3.forceX().strength(0.01))
-        .force('y', d3.forceY().strength(0.01*height/width))
+        .force('y', d3.forceY().strength(0.01 * height / width))
 
     let { node, link } = nodeLink(graph, plotCanvas)
 
@@ -73,10 +79,6 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-
         buildNode(d3.select(this), nodeScale(d.radius), d.pieChart, uniqueCountry, colorCustom, d.id)
     });
 
-    // graph.nodes.filter((d, i) => d.id === "Node_3")[0].fx = width/2
-    // graph.nodes.filter((d, i) => d.id === "Node_3")[0].fy = height/2
-
-
     simulation
         .nodes(graph.nodes)
         .on("tick", ticked);
@@ -85,7 +87,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-
         .links(graph.links);
 
     function ticked() {
-        
+
         link
             .attr("x1", d => d.source.x)
             .attr("y1", d => d.source.y)
@@ -121,24 +123,26 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-
         d.fy = null;
     }
 
-    refreshNodeTable(graph)
+    // refreshNodeTable(graph)
     refreshLinkTable(graph)
+    drawCountryPie(uniqueCountry)
 
-    
-    
+
     $('#searchBar').select2({
         minimumInputLength: 1,
         data: formatSelectData(graph),
         templateResult: formatState
     });
 
-    function formatState (state) {
-        if(state.text != "Searching…") {
-            var $state = $("<span>" + state.id.split("|")[0]+"</span><span style='float: right'><kbd>" + state.id.split("|")[1]+"</kbd></span>");
+    function formatState(state) {
+        if (state.text != "Searching…") {
+            var $state = $("<span>" + state.id.split("|")[0] + "</span><span style='float: right'><kbd>" + state.id.split("|")[1] + "</kbd></span>");
             return $state;
         }
     };
-    
-    bootstrapBehaviors()
+
+    bootstrapBehaviors(uniqueCountry, getUniqueDate(graph))
+    // drawDateplot(uniqueCountry)
+    globalSearch("EPI_ISL_416451|acc", graph)
 })
 
