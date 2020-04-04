@@ -3,8 +3,8 @@
  * @version: 
  * @Author: Anke Wang
  * @Date: 2020-04-03 15:08:55
- * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-04 18:31:56
+ * @LastEditors: Anke Wang
+ * @LastEditTime: 2020-04-04 22:11:35
  */
 
 import * as d3 from 'd3';
@@ -20,8 +20,8 @@ import * as d3 from 'd3';
  */
 export const fadeReset = (allNodes, allLinks) => {
 
-    allNodes.style('stroke-opacity', 1);
-    allLinks.style('stroke-opacity', 1);
+    allNodes.style('opacity', 1);
+    allLinks.style('opacity', 1).style('stroke', "#999");
 }
 
 /**
@@ -45,14 +45,14 @@ export const nodeHighlight = (allNodes, allLinks, nodesID, opacity) => {
 
         let element;
         element = d3.select(this);
-        element.style("opacity", opacity);
+        element.style('opacity', opacity);
 
         if (Array.isArray(nodesID) === false) 
         {   
             if(d.id === nodesID)
             {
-                element.style("opacity", "1");
-                allLinks.style('stroke-opacity', o => (o.source.id === nodesID || o.target.id === nodesID ? 1 : opacity));
+                element.style('opacity', '1');
+                allLinks.style('opacity', o => (o.source.id === nodesID || o.target.id === nodesID ? 1 : opacity));
                 allLinks.style('stroke', o => (o.source.id === nodesID || o.target.id === nodesID ? "#ffc107" : "#999"));
             }
         }
@@ -60,8 +60,8 @@ export const nodeHighlight = (allNodes, allLinks, nodesID, opacity) => {
         {
             if (nodesID.includes(d.id))
             {
-                element.style("opacity", "1");
-                allLinks.style('stroke-opacity', o => (nodesID.includes(o.source.id) && nodesID.includes(o.target.id) ? 1 : opacity));
+                element.style('opacity', '1');
+                allLinks.style('opacity', o => (nodesID.includes(o.source.id) && nodesID.includes(o.target.id) ? 1 : opacity));
             }
         }
     });
@@ -90,11 +90,11 @@ export const linkHighlight = (allNodes, allLinks, link, opacity) => {
 
         let element;
         element = d3.select(this);
-        element.style("opacity", opacity);
+        element.style('opacity', opacity);
 
         if(d.source === link.source && d.target === link.target)
 		{
-            element.style("opacity", "1");
+            element.style('opacity', "1");
            
 		}
 
