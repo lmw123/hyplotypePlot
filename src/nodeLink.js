@@ -3,14 +3,17 @@
  * @version: 
  * @Author: Mengwei Li
  * @Date: 2020-04-02 14:46:45
- * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-03 21:20:47
+ * @LastEditors: Anke Wang
+ * @LastEditTime: 2020-04-04 14:45:39
  */
+
 import * as d3 from 'd3';
 import { nodeSizeRange, linkSizeRange } from './plotConfig'
+import { nodeHighlight, linkHighlight } from './partsHighlight'
 
 export const nodeLinkScale = (graph) => {
 
+    
     let lineScale = d3.scalePow()
         .exponent(0.5)
         .domain(d3.extent(graph.links.map(a => a.distance)))
@@ -24,6 +27,7 @@ export const nodeLinkScale = (graph) => {
 }
 
 export const nodeLink = (graph, plotCanvas) => {
+
     let link = plotCanvas
         .attr("class", "links")
         .selectAll("line")
@@ -35,6 +39,7 @@ export const nodeLink = (graph, plotCanvas) => {
             d3.select("#info")
                 .text("distance: " + d.distance)
         })
+    
 
     let node = plotCanvas
         .attr("class", "nodes")
@@ -45,14 +50,11 @@ export const nodeLink = (graph, plotCanvas) => {
         .attr("radius", function (d) {
             return d.radius;
         })
-        .on("click", d => {
-            d3.selectAll("circle")
-                .attr("stroke-width", 0)
-            d3.select("#" + d.id)
-                .attr("stroke-width", 15)
-                .attr("stroke", "#ffc107")
-                .attr("stroke-opacity", 0.9)
-        })
+
+
+    link.on("click", d => {linkHighlight(node,link,d,0.2)})
+    node.on("click", d => {nodeHighlight(node,link,d.id,0.2)})
+    
 
     return { node, link }
 }
