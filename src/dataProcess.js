@@ -4,8 +4,10 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 13:52:46
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-04 18:15:40
+ * @LastEditTime: 2020-04-05 21:41:16
  */
+
+import * as d3 from 'd3';
 export const getUniqueCountry = (data) => {
 
     let country = data.nodes.map(a => a.pieChart.map(a => a.color))
@@ -30,22 +32,31 @@ export const getUniqueDate = (data) => {
     let dataAll = []
     date.forEach(c => dataAll = dataAll.concat(c))
     // uniqueDate = Array.from(new Set(uniqueDate))
-    let dateCount = dataAll.reduce(function (allNames, name) { if (name in allNames) { allNames[name]++; } else { allNames[name] = 1; } return allNames; }, {});
+    let dateCount = dataAll.reduce(function (allNames, name) { if (name in allNames) { allNames[name]++; } else if(name.length === 10){ allNames[name] = 1; } return allNames; }, {});
 
-    let res = [];
-    Object.keys(dateCount).forEach(e => {
-        if(e.length === 10) {
-            res.push({
-                "name": e,
-                "count": dateCount[e]
-            })
-        }
-    })
-
-    res.sort((a, b) => {
-        return (b.name < a.name) ? 1 : (b.name > a.name) ? -1 : 0;
-    })
+    let dateSort = Object.keys(dateCount).sort();
     
+    let timeRange = d3.timeDay.range(new Date(dateSort[0]), new Date(dateSort[dateSort.length - 1]))
+    let formatTime = d3.timeFormat("%Y-%m-%d")
+    let res = [];
+
+    timeRange.forEach((e,i) => {
+        let count = 0;
+        if(dateCount[formatTime(e)]){
+            count = dateCount[formatTime(e)]
+        }
+        res.push({
+            name: formatTime(e),
+            count: count,
+        })
+    })
     return res;
 }
 
+export const getUniqueVirus = (graph) => {
+    let virus = []
+    graph.nodes.forEach(node => {
+        virus = virus.concat(node.Virus)
+    })
+    return virus;
+}

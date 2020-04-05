@@ -11,7 +11,7 @@ body {
     height: 100%;
 }
 
-.sidebar-panel, .node-table, .link-table, .legend-panel, .network-panel {
+.sidebar-panel, .node-table, .link-table, .date-plot-panel, .network-panel {
     border: 1px solid gray;
 }
 
@@ -24,28 +24,35 @@ body {
 
 .plot-panel {
     display: flex;
+    display: -webkit-box;   /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+display: -ms-flexbox;  /* TWEENER - IE 10 */
+display: -webkit-flex; 
     flex-direction: column;
     flex: 2;
 }
 
 .node-table {
     flex: 1;
+    height: 33.3%;
     overflow: scroll
 }
 
 .link-table {
-    flex: 1;
+    flex: 2;
+    height: 66.7%;
     overflow: scroll;
 }
 
-.legend-panel {
+.date-plot-panel {
     position: relative;
-    flex: 1;
-    overflow: scroll
+    flex: 1 1 25%;
+    overflow: scroll;
+    height: 25%;
 }
 
 .network-panel {
-    flex: 3;
+    position: relative;
+    flex: 1 1 75%;
     overflow: scroll
 }
 
@@ -113,7 +120,7 @@ body {
 
 #barPlotControl {
     position: absolute;
-    bottom: 1px;
+    top: 1px;
     right: 3px;
     z-index: 10;
     font-size: 20;

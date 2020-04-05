@@ -4,30 +4,29 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:38
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-04 22:21:26
+ * @LastEditTime: 2020-04-05 22:00:13
  */
 import './css/index.css'
 import * as d3 from 'd3';
-import { getUniqueCountry, getUniqueDate } from './dataProcess';
+import { getUniqueCountry, getUniqueDate, getUniqueVirus} from './dataProcess';
 import { buildNode } from './buildNode';
 import { nodeLink, nodeLinkScale } from './nodeLink';
 import { defaultColor, bootstrapBehaviors, linkSizeRange } from './plotConfig';
-import { refreshNodeTable } from './nodeTable';
-import { refreshLinkTable } from './linkTable';
+import { refreshNodeTable, updateNodeTable, updateNodeTableByVirus } from './nodeTable';
 import { formatSelectData, globalSearch } from './search';
-import { drawCountryPie } from './countryPie';
 import { nodeHighlight, linkHighlight } from './partsHighlight';
 import 'bootstrap';
 import 'bootstrap-table';
 import 'select2';
-import { drawBarPlot,drawHeatmapDate } from './datePlot';
+import { drawBarPlot, drawHeatmapDate } from './datePlot';
+import { playStart } from './player';
+import { legendDataCountry } from './legend';
 
 d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-26&area=world").then(graph => {
 
     let colorCustom = defaultColor;
     let { lineScale, nodeScale, lineScale2 } = nodeLinkScale(graph);
     let uniqueCountry = getUniqueCountry(graph);
-
     
     let width = $('.network-panel').width();
     let height = $('.network-panel').height();
@@ -53,7 +52,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-
 
     d3.select("#zoomReset")
         .on("click", () => plotCanvas.transition().call(zoom.scaleTo, 2))
-        
+
     d3.select("#zoomIn")
         .on("click", () => plotCanvas.transition().call(zoom.scaleBy, 1.2))
 
@@ -64,7 +63,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-
         .force("link", d3.forceLink()
             .id(d => d.id)
             .distance(d => lineScale(d.distance) + nodeScale(d.source.radius) / 2 + (d.target.radius) / 2).strength(1))
-        .force("charge", d3.forceManyBody().distanceMax(linkSizeRange[1]).distanceMin(linkSizeRange[0]).strength(-1))
+        .force("charge", d3.forceManyBody().distanceMax(linkSizeRange[1]).distanceMin(linkSizeRange[0]).strength(-2))
         .force("center", d3.forceCenter(width / 2, height / 2))
         .force('x', d3.forceX().strength(0.01))
         .force('y', d3.forceY().strength(0.01 * height / width))
@@ -125,16 +124,17 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-
         d.fy = null;
     }
 
-    // refreshNodeTable(graph)
-    refreshLinkTable(graph)
-    drawCountryPie(uniqueCountry)
-
+    
+    
+    refreshNodeTable(graph.nodes)
 
     $('#searchBar').select2({
         minimumInputLength: 1,
         data: formatSelectData(graph),
         templateResult: formatState
     });
+
+    
 
     function formatState(state) {
         if (state.text != "Searching…") {
@@ -145,39 +145,64 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-
 
     let uniqueDate = getUniqueDate(graph)
     bootstrapBehaviors(uniqueCountry, uniqueDate)
-    // drawDateplot(uniqueCountry)
-    
-    // nodeHighlight(node,link,globalSearch("2020-03-10|date", graph),0.2)
 
     $('#searchBar').on('select2:select', function (e) {
-
-        nodeHighlight(node,link,globalSearch($('#searchBar').val(), graph),0.2)
+        nodeHighlight(node, link, globalSearch($('#searchBar').val(), graph), 0.2)
     });
 
     let chart = drawHeatmapDate(uniqueDate)
+    let uniqueVirus = getUniqueVirus(graph)
+    legendDataCountry(graph, uniqueCountry,colorCustom, globalSearch, nodeHighlight, node, link, chart, uniqueVirus);
+    chart.on('mouseover', function (params) {
+        chart.dispatchAction({
+            type: 'restore'
+        })
+        chart.dispatchAction({
+            type: 'highlight',
+            seriesIndex: 0,
+            name: params.name
+        })
+        let res = globalSearch(params.value[0] + "|date", graph)
+        nodeHighlight(node, link, res, 0.2);
+        // console.log(res)
+        let a = uniqueVirus.filter(e => e.date === params.value[0])
+        updateNodeTableByVirus(a)
+        // updateNodeTable(graph.nodes.filter(e => res.indexOf(e.id) >= 0))
+    });
+
+    chart.on('mouseout', function (params) {
+        node.style('opacity', 1);
+        link.style('opacity', 1);
+    });
+    
+    node.on("click", d => {
+        updateNodeTable([d])
+        nodeHighlight(node,link,d.id,0.2);
+        console.log(d.Virus.map(e => e.date)[0])
+        chart.dispatchAction({
+            type: 'restore'
+        })
+        chart.dispatchAction({
+            type: 'highlight',
+            seriesIndex: 0,
+            name: d.Virus.map(e => e.date)
+        })
+    })
+    
     $(".fa-globe-americas").on("click", () => drawBarPlot(uniqueCountry))
     $(".fa-calendar-alt").on("click", () => drawHeatmapDate(uniqueDate))
 
-    $(".fa-play-circle").on("click", e => {
+    $(".fa-play-circle").on("click", () => {
+        playStart($(".fa-play-circle"), uniqueDate, graph, node, link, chart)
+    })
 
-        let a = []
-        getUniqueDate(graph).forEach( (e,i) => {
-            setTimeout(() => {
-                a = a.concat(globalSearch(e.name + "|date", graph))
-                a = Array.from(new Set(a))
-                nodeHighlight(node, link, a,0.2);
-                // chart.dispatchAction({
-                //     type: 'downplay',
-                //     seriesIndex: 0,
-                //     dataIndex: i-1
-                // })
-                chart.dispatchAction({
-                    type: 'highlight',
-                    seriesIndex: 0,
-                    dataIndex: i
-                })
-            }, 500*i)
+
+    $(".fa-redo").on("click", () => {
+        chart.dispatchAction({
+            type: 'restore'
         })
+        node.style('opacity', 1);
+        link.style('opacity', 1);
     })
 })
 

@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-04 11:20:38
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-04 22:02:07
+ * @LastEditTime: 2020-04-05 21:15:49
  */
 
 import * as echarts from 'echarts';
@@ -45,17 +45,26 @@ export const drawHeatmapDate = (data) => {
     let a = []
 
     data.forEach(e => {
-        a.push([e.name, e.count])
+        a.push({
+            name: e.name, 
+            value: [e.name,e.count]
+        })
     })
 
     let option = {
         grid:{
+            height: $("datePlot").height(),
             x:40,
             x2:20,
             y:10,
             y2:40
         },
-        tooltip: {},
+        tooltip: {
+            formatter: function (params, ticket, callback) {
+                return "<strong>"+params.value[0]+"</strong><br>Isolates: " + params.value[1]
+                console.log(params)
+            }
+        },
         visualMap: {
             textGap: 3,
             type: 'continuous',
@@ -92,8 +101,6 @@ export const drawHeatmapDate = (data) => {
             }
         }
     };
-    
-   
 
     let chart = echarts.init(document.getElementById("datePlot"))
     chart.setOption(option);

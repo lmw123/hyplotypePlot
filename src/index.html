@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:16
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-04 20:42:21
+ * @LastEditTime: 2020-04-05 20:18:26
  -->
 <link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.bootcss.com/bootstrap-table/1.16.0/bootstrap-table.min.css" rel="stylesheet">
@@ -16,14 +16,11 @@
     <div class="sidebar-panel">
 
         <div class="node-table">
-            <div id="nodeInfo" style="height:100%;">Virus</div>
-            <div class="table-responsive">
-                <table id="nodeTable" class="table"></table>
-            </div>
+            <div id="legendPanel" style="height:100%;"></div>
         </div>
 
         <div class="link-table">
-            <h4 id="linkInfo">Links</h4>
+            <h4 id="linkInfo"></h4>
             <div class="table-responsive">
                 <table id="linkTable" class="table"></table>
             </div>
@@ -33,7 +30,7 @@
 
     <div class="plot-panel">
 
-        <div class="network-panel" style="position: relative; ">
+        <div class="network-panel">
 
             <i class="fas fa-question-circle" data-trigger="hover" data-container="body" data-toggle="popover"
                 data-placement="bottom" data-content="TODO: Something about the network">
@@ -83,17 +80,20 @@
             </div>
 
             <div class="playDate">
-                <i class="fas fa-play-circle"></i>
-                <i class="fas fa-pause-circle"></i>
+                <input id="playIndex" value="0" hidden>
+                <input id="playContent" value="" hidden>
+                <i class="fas fa-play-circle" data-status="start" data-index=0 data-tmp=""></i>
+                <i class="fas fa-pause-circle" style="display: none;"></i>
+                <i class="fas fa-redo"></i>
             </div>
 
             <div id="plot"></div>
         </div>
 
-        <div class="legend-panel">
+        <div class="date-plot-panel">
             <div id="barPlotControl">
-                <i class="fas fa-globe-americas"></i>
-                <i class="fas fa-calendar-alt"></i>
+                <i class="fas fa-globe-americas" style="margin-bottom: 2px;"></i><br>
+                <i class="fas fa-calendar-alt"></i> 
             </div> 
             <div id="datePlot"></div>
         </div>

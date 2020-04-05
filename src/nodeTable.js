@@ -4,16 +4,16 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-03 11:13:56
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-03 11:41:52
+ * @LastEditTime: 2020-04-05 21:57:32
  */
 import 'bootstrap';
 import 'bootstrap-table';
 
-export const refreshNodeTable = (graph) => {
+export const refreshNodeTable = (nodes) => {
     let nodeInfo = []
-    graph.nodes.forEach(c => nodeInfo = nodeInfo.concat(c.Virus))
-    $("#nodeInfo").text("Virus (" + nodeInfo.length + ")")
-    $("#nodeTable")
+    nodes.forEach(c => nodeInfo = nodeInfo.concat(c.Virus))
+    $("#linkInfo").text("Virus (" + nodeInfo.length + ")")
+    $("#linkTable")
         .bootstrapTable({
             columns: [{
                 field: 'acc',
@@ -31,4 +31,20 @@ export const refreshNodeTable = (graph) => {
             }],
             data: nodeInfo
         })
+}
+
+
+export const updateNodeTable = (nodes) => {
+    // $("#linkTable").bootstrapTable('destroy')
+    let nodeInfo = []
+    nodes.forEach(c => nodeInfo = nodeInfo.concat(c.Virus))
+    $("#linkInfo").text("Virus (" + nodeInfo.length + ")")
+    $("#linkTable")
+        .bootstrapTable("refreshOptions", {data: nodeInfo})
+}
+
+export const updateNodeTableByVirus = (virus) => {
+    $("#linkInfo").text("Virus (" + virus.length + ")")
+    $("#linkTable")
+        .bootstrapTable("refreshOptions", {data: virus})
 }
