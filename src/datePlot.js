@@ -4,13 +4,12 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-04 11:20:38
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-04 17:20:31
+ * @LastEditTime: 2020-04-04 22:02:07
  */
 
 import * as echarts from 'echarts';
 import { dateFormat } from 'highcharts';
 export const drawBarPlot = (data) => {
-    console.log(data)
     let option = {
         grid:{
             x:40,
@@ -36,17 +35,19 @@ export const drawBarPlot = (data) => {
             type: 'bar'
         }]
     };
-    
+    echarts.init(document.getElementById("datePlot")).clear()
     echarts.init(document.getElementById("datePlot")).setOption(option);
 }
 
 export const drawHeatmapDate = (data) => {
+
+    echarts.init(document.getElementById("datePlot")).clear()
     let a = []
 
     data.forEach(e => {
         a.push([e.name, e.count])
     })
-    console.log(data.map(e => e.count))
+
     let option = {
         grid:{
             x:40,
@@ -56,12 +57,8 @@ export const drawHeatmapDate = (data) => {
         },
         tooltip: {},
         visualMap: {
-            // min: 0,
-            // max: data.reduce((e1, e2) => {
-            //     return e1.count > e2.count ? e1.count : e2.count}
-            // ),
+            textGap: 3,
             type: 'continuous',
-            // orient: 'horizontal',
             right: 20,
             bottom: "center",
             textStyle: {
@@ -78,16 +75,30 @@ export const drawHeatmapDate = (data) => {
             itemStyle: {
                 borderWidth: 0.5
             },
+            dayLabel: {
+                margin: 5
+            },
             yearLabel: {show: false}
         },
         series: {
+            name: "heat",
             type: 'heatmap',
             coordinateSystem: 'calendar',
-            data: a
+            data: a,
+            emphasis: {
+                itemStyle: {
+                    color: "red"
+                }
+            }
         }
     };
     
-    echarts.init(document.getElementById("datePlot")).setOption(option);
+   
+
+    let chart = echarts.init(document.getElementById("datePlot"))
+    chart.setOption(option);
+
+    return chart;
 }
 
 

@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 14:46:45
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-04 18:27:53
+ * @LastEditTime: 2020-04-04 18:40:34
  */
 
 import * as d3 from 'd3';
@@ -32,7 +32,7 @@ export const nodeLink = (graph, plotCanvas) => {
         .selectAll("line")
         .data(graph.links)
         .enter().append("line")
-        .attr("stroke-width", 0.5)
+        .attr("stroke-width", 0.8)
         .attr("stroke", "#999")
     
 

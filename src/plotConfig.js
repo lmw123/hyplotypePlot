@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-03 10:21:12
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-04 16:41:33
+ * @LastEditTime: 2020-04-04 21:49:01
  */
 
 import { drawBarPlot,drawHeatmapDate } from './datePlot';
@@ -20,9 +20,7 @@ export const bootstrapBehaviors = (uniqueCountry, uniqueDate) => {
         $("[data-toggle='popover']").popover()
     })
     
-    drawHeatmapDate(uniqueDate)
-    $(".fa-globe-americas").on("click", () => drawBarPlot(uniqueCountry))
-    $(".fa-calendar-alt").on("click", () => drawHeatmapDate(uniqueDate))
+    
 }
 
 export const nodeSizeRange = [1, 15]

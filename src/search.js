@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-03 22:24:28
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-04 10:58:25
+ * @LastEditTime: 2020-04-04 20:32:15
  */
 
 
@@ -82,5 +82,5 @@ export const globalSearch = (term, graph) => {
             };
         })
     }
-
+    return b.map(e => e.id);
 }

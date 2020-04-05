@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:38
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-04 16:38:41
+ * @LastEditTime: 2020-04-04 22:21:26
  */
 import './css/index.css'
 import * as d3 from 'd3';
@@ -15,10 +15,12 @@ import { defaultColor, bootstrapBehaviors, linkSizeRange } from './plotConfig';
 import { refreshNodeTable } from './nodeTable';
 import { refreshLinkTable } from './linkTable';
 import { formatSelectData, globalSearch } from './search';
-import { drawCountryPie } from './countryPie'
+import { drawCountryPie } from './countryPie';
+import { nodeHighlight, linkHighlight } from './partsHighlight';
 import 'bootstrap';
 import 'bootstrap-table';
 import 'select2';
+import { drawBarPlot,drawHeatmapDate } from './datePlot';
 
 d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-26&area=world").then(graph => {
 
@@ -141,8 +143,41 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-
         }
     };
 
-    bootstrapBehaviors(uniqueCountry, getUniqueDate(graph))
+    let uniqueDate = getUniqueDate(graph)
+    bootstrapBehaviors(uniqueCountry, uniqueDate)
     // drawDateplot(uniqueCountry)
-    globalSearch("EPI_ISL_416451|acc", graph)
+    
+    // nodeHighlight(node,link,globalSearch("2020-03-10|date", graph),0.2)
+
+    $('#searchBar').on('select2:select', function (e) {
+
+        nodeHighlight(node,link,globalSearch($('#searchBar').val(), graph),0.2)
+    });
+
+    let chart = drawHeatmapDate(uniqueDate)
+    $(".fa-globe-americas").on("click", () => drawBarPlot(uniqueCountry))
+    $(".fa-calendar-alt").on("click", () => drawHeatmapDate(uniqueDate))
+
+    $(".fa-play-circle").on("click", e => {
+
+        let a = []
+        getUniqueDate(graph).forEach( (e,i) => {
+            setTimeout(() => {
+                a = a.concat(globalSearch(e.name + "|date", graph))
+                a = Array.from(new Set(a))
+                nodeHighlight(node, link, a,0.2);
+                // chart.dispatchAction({
+                //     type: 'downplay',
+                //     seriesIndex: 0,
+                //     dataIndex: i-1
+                // })
+                chart.dispatchAction({
+                    type: 'highlight',
+                    seriesIndex: 0,
+                    dataIndex: i
+                })
+            }, 500*i)
+        })
+    })
 })
 
