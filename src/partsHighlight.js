@@ -4,7 +4,7 @@
  * @Author: Anke Wang
  * @Date: 2020-04-03 15:08:55
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-04 22:48:12
+ * @LastEditTime: 2020-04-05 10:53:24
  */
 
 import * as d3 from 'd3';
@@ -18,10 +18,10 @@ import * as d3 from 'd3';
  * @return: null
  * @detail: 
  */
-export const fadeReset = (allNodes, allLinks) => {
 
-    allNodes.style('stroke-opacity', 1);
-    allLinks.style('stroke-opacity', 1);
+export const fadeReset = (allNodes, allLinks) => {
+    allNodes.style('opacity', 1);
+    allLinks.style('opacity', 1).style('stroke', "#999");
 }
 
 /**
@@ -40,35 +40,19 @@ export const fadeReset = (allNodes, allLinks) => {
 export const nodeHighlight = (allNodes, allLinks, nodesID, opacity) => {
 
     fadeReset(allNodes, allLinks);
-    console.log(nodesID)
-    allNodes.each(function (d) {
 
-        let element;
-        element = d3.select(this);
-        element.style("opacity", opacity);
-        
-        if (nodesID.length === 1 || Array.isArray(nodesID) === false) {
-            if (nodesID.length === 1) {
-                nodesID = nodesID[0]
-            }
-            if (d.id === nodesID) {
-                console.log(nodesID)
-                element.style("opacity", "1");
-                allLinks.style('stroke-opacity', o => (o.source.id === nodesID || o.target.id === nodesID ? 1 : opacity));
-                allLinks.style('stroke', o => (o.source.id === nodesID || o.target.id === nodesID ? "#007bff" : "#999"));
-            }
-        }
-        else {
-            if (nodesID.includes(d.id)) {
-                element.style("opacity", "1");
-                // allLinks.style('stroke-opacity', o => (nodesID.includes(o.source.id) && nodesID.includes(o.target.id) ? 1 : opacity));
-                // allLinks.style('stroke', o => (nodesID.includes(o.source.id) && nodesID.includes(o.target.id) ? "#ffc107" : "#999"));
-            }
-        }
-    });
-
+    if (Array.isArray(nodesID) === false)
+    {
+        allNodes.style('opacity', d => (d.id === nodesID? 1 : opacity));
+        allLinks.style('opacity', o => (o.source.id === nodesID || o.target.id === nodesID ? 1 : opacity));
+        allLinks.style('stroke', o => (o.source.id === nodesID || o.target.id === nodesID ? "#ffc107" : "#999"));
+    }
+    else
+    {
+        allNodes.style('opacity', d => (nodesID.includes(d.id)? 1 : opacity));
+        allLinks.style('opacity', o => (nodesID.includes(o.source.id) && nodesID.includes(o.target.id) ? 1 : opacity));
+    }
 }
-
 
 /**
  * @name: linkHighlight
@@ -87,20 +71,7 @@ export const linkHighlight = (allNodes, allLinks, link, opacity) => {
 
     fadeReset(allNodes, allLinks);
 
-    allLinks.each(function (d) {
-
-        let element;
-        element = d3.select(this);
-        element.style("opacity", opacity);
-        element.style("stroke", "#999");
-        if (d.source === link.source && d.target === link.target) {
-            element.style("opacity", "1");
-            element.style("stroke", "#ffc107");
-
-        }
-
-    });
-
-    allNodes.style('opacity', o => (link.source.id === o.id || link.target.id === o.id ? 1 : opacity));
+    allLinks.style('opacity', o => (o.source === link.source && o.target === link.target ? 1 : opacity));
+    allNodes.style('opacity', d => (link.source.id === d.id || link.target.id === d.id ? 1 : opacity));
 
 }
