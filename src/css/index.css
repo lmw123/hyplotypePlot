@@ -8,7 +8,7 @@ body {
 
 .main-container {
     display: flex;
-    height: 100%;
+    height: 100%
 }
 
 .sidebar-panel, .node-table, .link-table, .date-plot-panel, .network-panel {
@@ -24,22 +24,24 @@ body {
 
 .plot-panel {
     display: flex;
-    display: -webkit-box;   /* OLD - iOS 6-, Safari 3.1-6, BB7 */
-display: -ms-flexbox;  /* TWEENER - IE 10 */
-display: -webkit-flex; 
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
     flex-direction: column;
     flex: 2;
 }
 
 .node-table {
-    flex: 1;
-    height: 33.3%;
+    flex: 2;
+    height: 40%;
     overflow: scroll
 }
 
 .link-table {
-    flex: 2;
-    height: 66.7%;
+    flex: 3;
+    height: 60%;
     overflow: scroll;
 }
 

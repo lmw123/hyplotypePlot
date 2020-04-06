@@ -4,20 +4,22 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 15:46:52
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-05 21:58:03
+ * @LastEditTime: 2020-04-06 15:58:51
  */
 import * as d3 from 'd3';
 import { globalSearch } from './search';
 import { nodeHighlight } from './partsHighlight';
 import { updateNodeTable, updateNodeTableByVirus } from './nodeTable';
 
-export const legendDataCountry = (graph, uniqueCountry, colorCustom, search, nodeHighlight, node, link, chart, uniqueVirus) => {
+export const legendDataCountry = (graph, country, colorCustom, search, nodeHighlight, node, link, chart, uniqueVirus) => {
     
+    let uniqueCountry = JSON.parse(JSON.stringify(country))
+    uniqueCountry.sort((a, b) => {
+        return (b.name < a.name) ? 1 : (b.name > a.name) ? -1 : 0;
+    })
+
     let width = $('#legendPanel').width();
-    
-
     let ncol = parseInt(width/140);
-
     let height = Math.ceil(uniqueCountry.length/ncol)*20 + 30;
     
     let svg = d3.select("#legendPanel").append("svg")

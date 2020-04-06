@@ -4,14 +4,106 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:16
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-05 20:18:26
+ * @LastEditTime: 2020-04-06 17:38:58
  -->
 <link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.bootcss.com/bootstrap-table/1.16.0/bootstrap-table.min.css" rel="stylesheet">
 <link href="https://cdn.bootcss.com/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 <link href="https://cdn.bootcss.com/select2/4.0.12/css/select2.min.css" rel="stylesheet">
+<link rel='stylesheet' type='text/css' href="https://bigd.big.ac.cn:443/ncov/static/sui/semantic.min.css">
+<link rel="stylesheet" type="text/css" href="https://bigd.big.ac.cn:443/ncov/static/css/my.css" />
 
-<div class="main-container">
+
+<script src="https://bigd.big.ac.cn:443/ncov/static/js/jquery-1.11.3.min.js"></script>
+
+<!-- <script src="https://bigd.big.ac.cn:443/ncov/static/js/bootstrap.min.js"></script> -->
+<script src="https://bigd.big.ac.cn:443/ncov/static/sui/semantic.min.js"></script>
+
+<div class="ui vertical sidebar menu">
+    <a class="item" href="https://bigd.big.ac.cn" target="_blank"><img class="ui tiny image"
+            src="https://bigd.big.ac.cn/cdn/image/ngdc-logo-blue.png" /></a>
+    <a class="item" href="https://bigd.big.ac.cn:443/ncov">Home</a>
+    <a class="item" href="https://bigd.big.ac.cn:443/ncov/about">About Coronavirus</a>
+    <a class="item" href="https://bigd.big.ac.cn:443/ncov/release_genome">Released Genome Sequences</a>
+    <div class="item">
+        <div class="header">Genome Variation</div>
+        <div class="menu">
+            <a class="item" href="https://bigd.big.ac.cn:443/ncov/variation/analysis">Visualization</a>
+            <a class="item" href="https://bigd.big.ac.cn:443/ncov/variation/statistics">Data Statistics</a>
+            <a class="item" href="https://bigd.big.ac.cn:443/ncov/variation/annotation">Variation Annotation</a>
+            <a class="item" href="https://bigd.big.ac.cn:443/ncov/variation/heatmap">Variation Frequency</a>
+            <a class="item" href="https://bigd.big.ac.cn:443/ncov/tree">Phylogentic Tree</a>
+        </div>
+    </div>
+    <div class="item">
+        <div class="header">Online Tools</div>
+        <div class="menu">
+            <a class="item" href="https://bigd.big.ac.cn:443/ncov/tool/annotation">Variation Annotation</a>
+            <a class="item" href="https://bigd.big.ac.cn:443/ncov/tool/variation-identify">Variation Identification</a>
+        </div>
+    </div>
+    <a href="https://bigd.big.ac.cn:443/ncov/publication/" class="item">Publications</a>
+    <a class="item" href="https://bigd.big.ac.cn:443/ncov/contact">Contact Us</a>
+    <div class="item">
+        <div class="header">Language / 语言</div>
+        <div class="menu">
+            <a class="item" href="?lang=en"><i class="flag gb"></i> English</a>
+            <a class="item" href="?lang=zh"><i class="flag cn"></i> 简体中文</a>
+        </div>
+    </div>
+</div>
+
+<div class="ui top fixed small compact menu">
+    <div class="ui fluid container">
+        <a class="item" href="http://www.big.ac.cn" target="_blank"><strong style="font-size: 20px;">CNCB</strong></a>
+        <a class="item" href="https://bigd.big.ac.cn" target="_blank"><img
+                src="https://bigd.big.ac.cn/cdn/image/notext-logo-small.png" style="margin-right: 10px" /> <strong
+                style="font-size: 20px;">NGDC</strong></a>
+        <a class="item" href="https://bigd.big.ac.cn:443/ncov">Home</a>
+        <a class="item" href="https://bigd.big.ac.cn:443/ncov/about">About Coronavirus</a>
+        <a class="item" href="https://bigd.big.ac.cn:443/ncov/release_genome">Released Genome Sequences</a>
+
+        <div class="ui simple dropdown item">
+            <a href="https://bigd.big.ac.cn:443/ncov/variation">Genome Variation <i class="dropdown icon"></i></a>
+            <div class="menu">
+                <a class="item" href="https://bigd.big.ac.cn:443/ncov/variation/analysis">Visualization</a>
+                <a class="item" href="https://bigd.big.ac.cn:443/ncov/variation/statistics">Data Statistics</a>
+                <a class="item" href="https://bigd.big.ac.cn:443/ncov/variation/annotation">Variation Annotation</a>
+                <a class="item" href="https://bigd.big.ac.cn:443/ncov/variation/heatmap">Variation Frequency</a>
+                <a class="item" href="https://bigd.big.ac.cn:443/ncov/tree">Phylogentic Tree</a>
+                <a class="item" href="https://bigd.big.ac.cn:443/ncov/network">Viral Genotyping Map</a>
+            </div>
+        </div>
+        <div class="ui simple dropdown item">
+            <a href="https://bigd.big.ac.cn:443/ncov/tools">Online Tools<i class="dropdown icon"></i></a>
+            <div class="menu">
+                <a class="item" href="https://bigd.big.ac.cn:443/ncov/tool/annotation">Variation Annotation</a>
+                <a class="item" href="https://bigd.big.ac.cn:443/ncov/tool/variation-identify">Variation
+                    Identification</a>
+            </div>
+        </div>
+        <a href="https://bigd.big.ac.cn:443/ncov/publication/" class="item">Publications</a>
+        <a class="item" href="https://bigd.big.ac.cn:443/ncov/contact">Contact Us</a>
+        <div class="right menu">
+            <div class="ui simple dropdown item">
+                Language / 语言 <i class="dropdown icon"></i>
+                <div class="menu">
+                    <a class="item" href="?lang=en"><i class="flag gb"></i> English</a>
+                    <a class="item" href="?lang=zh"><i class="flag cn"></i> 简体中文</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body ::-webkit-scrollbar {
+        -webkit-appearance: none;
+        width: 0px;
+        height: 0px;
+    }
+</style>
+<div class="main-container" style="padding-top: 46.234px;">
 
     <div class="sidebar-panel">
 
@@ -33,7 +125,8 @@
         <div class="network-panel">
 
             <i class="fas fa-question-circle" data-trigger="hover" data-container="body" data-toggle="popover"
-                data-placement="bottom" data-content="TODO: Something about the network">
+                data-placement="bottom"
+                data-content="Haplotype maps of novel coronavirus across the whole world and China are constructed, respectively, based on the genome variation information obtained from available high-quality genome sequences.">
             </i>
 
             <div class="input-group input-group-sm global-search">
@@ -44,7 +137,7 @@
             </div>
 
 
-            <div class="dropdown">
+            <div class="dropdown" hidden>
                 <i class="fas fa-sliders-h" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <form class="dropdown-menu p-4" style="width: 400px;">
                         <div class="form-group">
@@ -93,8 +186,8 @@
         <div class="date-plot-panel">
             <div id="barPlotControl">
                 <i class="fas fa-globe-americas" style="margin-bottom: 2px;"></i><br>
-                <i class="fas fa-calendar-alt"></i> 
-            </div> 
+                <i class="fas fa-calendar-alt"></i>
+            </div>
             <div id="datePlot"></div>
         </div>
     </div>

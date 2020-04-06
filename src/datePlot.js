@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-04 11:20:38
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-05 21:15:49
+ * @LastEditTime: 2020-04-06 16:07:01
  */
 
 import * as echarts from 'echarts';
@@ -28,7 +28,8 @@ export const drawBarPlot = (data) => {
             }
         },
         yAxis: {
-            type: 'value'
+            type: 'log',
+            logBase: 2
         },
         series: [{
             data: data.map(e => e.count),
@@ -47,7 +48,7 @@ export const drawHeatmapDate = (data) => {
     data.forEach(e => {
         a.push({
             name: e.name, 
-            value: [e.name,e.count]
+            value: [e.name,e.count],
         })
     })
 
@@ -94,9 +95,17 @@ export const drawHeatmapDate = (data) => {
             type: 'heatmap',
             coordinateSystem: 'calendar',
             data: a,
+            label: {
+                show: true,
+                formatter: function(params) {
+                    return params.value[0].split('-')[1]+"-"+params.value[0].split('-')[2]
+                },
+                color: "#6c757d"
+            },
             emphasis: {
                 itemStyle: {
-                    color: "red"
+                    shadowBlur: 10,
+                    color: '#fd7e14'
                 }
             }
         }

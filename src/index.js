@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:38
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-05 22:00:13
+ * @LastEditTime: 2020-04-06 16:29:42
  */
 import './css/index.css'
 import * as d3 from 'd3';
@@ -22,7 +22,7 @@ import { drawBarPlot, drawHeatmapDate } from './datePlot';
 import { playStart } from './player';
 import { legendDataCountry } from './legend';
 
-d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-26&area=world").then(graph => {
+d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-01&area=world").then(graph => {
 
     let colorCustom = defaultColor;
     let { lineScale, nodeScale, lineScale2 } = nodeLinkScale(graph);
@@ -48,10 +48,10 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-
         .on("wheel.zoom", null)
         .on("dblclick.zoom", null);
 
-    plotCanvas.transition().call(zoom.scaleBy, 2)
+    // plotCanvas.transition().call(zoom.scaleBy, 2)
 
     d3.select("#zoomReset")
-        .on("click", () => plotCanvas.transition().call(zoom.scaleTo, 2))
+        .on("click", () => plotCanvas.transition().call(zoom.scaleTo, 1))
 
     d3.select("#zoomIn")
         .on("click", () => plotCanvas.transition().call(zoom.scaleBy, 1.2))
@@ -131,7 +131,12 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-
     $('#searchBar').select2({
         minimumInputLength: 1,
         data: formatSelectData(graph),
-        templateResult: formatState
+        templateResult: formatState,
+        language: {
+            inputTooShort: function() {
+                return 'Highlight nodes with Country，Acc. No.  or  Collection Date';
+            }
+        }
     });
 
     
@@ -164,7 +169,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-03-
         })
         let res = globalSearch(params.value[0] + "|date", graph)
         nodeHighlight(node, link, res, 0.2);
-        // console.log(res)
+        console.log(params)
         let a = uniqueVirus.filter(e => e.date === params.value[0])
         updateNodeTableByVirus(a)
         // updateNodeTable(graph.nodes.filter(e => res.indexOf(e.id) >= 0))
