@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:38
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-07 13:14:51
+ * @LastEditTime: 2020-04-07 14:23:02
  */
 import './css/index.css'
 import * as d3 from 'd3';
@@ -36,6 +36,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
         .attr("width", width)
         .attr("height", height);
 
+
     function zoomed() {
         plotCanvas.attr("transform", d3.event.transform);
     }
@@ -43,13 +44,11 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
     const zoom = d3.zoom()
         .scaleExtent([0.1, 40])
         .on("zoom", zoomed);
-
+        
     let plotCanvas = svg.append('g')
-        .call(zoom)
+        .call(() => zoom)
         .on("wheel.zoom", null)
         .on("dblclick.zoom", null);
-
-    // plotCanvas.transition().call(zoom.scaleBy, 2)
 
     d3.select("#zoomReset")
         .on("click", () => plotCanvas.transition().call(zoom.scaleTo, 1))
@@ -210,11 +209,25 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
         node.style('opacity', 1);
         link.style('opacity', 1);
     })
+
+    console.log(uniqueCountry)
+    var map = drawMap();
+    var getLatlng = setCountryCoord();
+
+    /* ---------------- just for test ----------------------*/
+    drawCircle(map, getLatlng, uniqueCountry.map(e => e.name), 10, 'green');
 })
 
 /* ---------------- call function - draw map ----------------------*/
-var map = drawMap();
-var getLatlng = setCountryCoord();
+// var map = drawMap();
+// var getLatlng = setCountryCoord();
 
-/* ---------------- just for test ----------------------*/
-drawCircle(map, getLatlng, ['China', 'Japan', 'Singapore', 'UnitedStates'], 10, 'red');
+// /* ---------------- just for test ----------------------*/
+// drawCircle(map, getLatlng, uniqueCountry.map(e => e.name), 10, 'green');
+
+// drawCircle(map, 
+//     getLatlng, 
+//     uniqueCountry.map(e => e.name),
+//     uniqueCountry.map(e => e.count), 
+//     colorCustom
+//    );

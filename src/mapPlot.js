@@ -3,8 +3,8 @@
  * @version: 
  * @Author: Anke Wang
  * @Date: 2020-04-04 15:31:42
- * @LastEditors: Anke Wang
- * @LastEditTime: 2020-04-07 13:19:05
+ * @LastEditors: Mengwei Li
+ * @LastEditTime: 2020-04-07 14:03:15
  * 
  * Code reference:
  * Leaflet Map: https://leafletjs.com/
@@ -25,11 +25,11 @@ export const setCountryCoord = () => {
     let countryCoord = [
         { "name": "China", "lat": 35.029996, "lng": 108.105469, },
         { "name": "Japan", "lat": 35.46067, "lng": 138.867188, },
-        { "name": "VietNam", "lat": 14.030015, "lng": 108.588867, },
+        { "name": "Vietnam", "lat": 14.030015, "lng": 108.588867, },
         { "name": "Malaysia", "lat": 4.210484, "lng": 101.975769, },
         { "name": "Thailand", "lat": 15.870032, "lng": 100.992538, },
         { "name": "Singapore", "lat": 1.352083, "lng": 103.819839, },
-        { "name": "Korea", "lat": 37.663998, "lng": 127.978462, },
+        { "name": "SouthKorea", "lat": 37.663998, "lng": 127.978462, },
         { "name": "Nepal", "lat": 28.394857, "lng": 84.124008, },
         { "name": "Russia", "lat": 61.52401, "lng": 105.318756, },
         { "name": "Cambodia", "lat": 12.565679, "lng": 104.990963, },
@@ -136,7 +136,7 @@ export const drawCircle = (basemap, getLatlng, countryName, r, color) => {
 
     // add a svg to the map
     L.svg().addTo(basemap);
-
+    
     // select the svg area and add circles
     d3.select("#mapid")
         .select("svg")

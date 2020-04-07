@@ -2,6 +2,10 @@ a {
     cursor: pointer;
 }
 
+.leaflet-top.leaflet-right {
+    display: none;
+}
+
 body {
     margin: 0;
 }
@@ -16,7 +20,7 @@ body {
 }
 
 .sidebar-panel {
-    flex: 1;
+    flex: 2;
     display: flex;
     overflow: scroll;
     flex-direction: column;
@@ -30,18 +34,18 @@ body {
     /* TWEENER - IE 10 */
     display: -webkit-flex;
     flex-direction: column;
-    flex: 2;
+    flex: 3;
 }
 
 .node-table {
-    flex: 2;
-    height: 40%;
+    flex: 1;
+    height: 50%;
     overflow: scroll
 }
 
 .link-table {
-    flex: 3;
-    height: 60%;
+    flex: 1;
+    height: 50%;
     overflow: scroll;
 }
 
