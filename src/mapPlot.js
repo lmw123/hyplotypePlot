@@ -4,7 +4,7 @@
  * @Author: Anke Wang
  * @Date: 2020-04-04 15:31:42
  * @LastEditors: Anke Wang
- * @LastEditTime: 2020-04-07 19:09:20
+ * @LastEditTime: 2020-04-07 19:27:09
  * 
  * Code reference:
  * Leaflet Map: https://leafletjs.com/
@@ -212,9 +212,8 @@ export const drawCircle = (basemap, getLatlng, mapNodeScale, countryName, r, col
 
 
     basemap.eachLayer(function (layer, i) {
-        if (layer._leaflet_id != 24)
+        if (layer.id == 'mycircle')
             basemap.removeLayer(layer);
-        // console.log(layer);
     });
 
 
@@ -245,7 +244,8 @@ export const drawCircle = (basemap, getLatlng, mapNodeScale, countryName, r, col
                 name: a.map(e => e.date)
             })
         });
+
+        circlesLayer.id = 'mycircle';
     });
 
 }
-
