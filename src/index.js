@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:38
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-07 16:32:03
+ * @LastEditTime: 2020-04-07 17:03:46
  */
 import './css/index.css'
 import * as d3 from 'd3';
@@ -59,7 +59,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
         .on("click", () => plotCanvas.transition().call(zoom.scaleBy, 0.8))
 
     let { node, link } = nodeLink(graph, plotCanvas)
-    
+
     let simulation = d3.forceSimulation()
         .force("link", d3.forceLink()
             .id(d => d.id)
@@ -216,9 +216,8 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
         .domain(d3.extent(uniqueCountry.map(e => e.count)))
         .range([2, 200])
 
-    uniqueCountry.forEach((d, i) => {
-        drawCircle(map, getLatlng, uniqueCountry[i].name, mapNodeScale(uniqueCountry[i].count), colorCustom[i], globalSearch, nodeHighlight, node, link, chart, uniqueVirus, graph)
-    })
+
+    drawCircle(map, getLatlng, uniqueCountry.map(e => e.name), uniqueCountry.map(e => mapNodeScale(e.count)), colorCustom, globalSearch, nodeHighlight, node, link, chart, uniqueVirus, graph)
 
 })
 
