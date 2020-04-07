@@ -4,7 +4,7 @@
  * @Author: Anke Wang
  * @Date: 2020-04-04 15:31:42
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-07 17:23:01
+ * @LastEditTime: 2020-04-07 19:22:39
  * 
  * Code reference:
  * Leaflet Map: https://leafletjs.com/
@@ -63,6 +63,7 @@ export const setCountryCoord = () => {
         { "name": "Hungary", "lat": 47.162494, "lng": 19.503304, },
         { "name": "CzechRepublic", "lat": 49.817492, "lng": 15.472962, },
         { "name": "Poland", "lat": 51.919438, "lng": 19.145136, },
+        { "name": "Luxemburg", "lat": 49.815273, "lng": 6.129583, },
         { "name": "Turkey", "lat": 38.963745, "lng": 35.243322, },
         { "name": "Lithuania", "lat": 55.169438, "lng": 23.881275, },
         { "name": "Denmark", "lat": 56.26392, "lng": 9.501785, },
@@ -207,31 +208,37 @@ export const drawCircle2 = (basemap, getLatlng, countryName, r, color, search, n
 }
 
 
-export const drawCircle = (basemap, getLatlng, countryName, r, color, search, nodeHighlight, node, link, chart, uniqueVirus, graph) => {
+export const drawCircle = (basemap, getLatlng, mapNodeScale, countryName, r, color, search, nodeHighlight, node, link, chart, uniqueVirus, graph) => {
 
-    clearMarkers(basemap);
-    
-    countryName.forEach(function(d,i) {
 
+    basemap.eachLayer(function (layer, i) {
+        if (layer._leaflet_id != 24)
+            basemap.removeLayer(layer);
+        // console.log(layer);
+    });
+
+
+    countryName.forEach(function (d, i) {
+        console.log(d)
         let lat = getLatlng[d][0];
         let lng = getLatlng[d][1];
 
-        let circlesLayer = L.circleMarker([lat, lng],  {
+        let circlesLayer = L.circleMarker([lat, lng], {
             radius: 10 + mapNodeScale(r[i]) * 0.2, //r * 3500,
             color: color[i],
             fillColor: color[i],
             fillOpacity: 0.5
-        }).addTo(circleGroup).bindPopup(d+":"+r[i]+" isloates").on("click", e => {
+        }).addTo(basemap).bindPopup(d + ": " + r[i] + " isloates").on("click", e => {
             let res = globalSearch(d + "|country", graph)
             nodeHighlight(node, link, res, 0.2)
             let filterNodes = graph.nodes.filter(e => res.indexOf(e.id) >= 0)
             let a = uniqueVirus.filter(e => e.loci.split("-")[0] === d)
             updateNodeTableByVirus(a)
-    
+
             chart.dispatchAction({
                 type: 'restore'
             })
-    
+
             chart.dispatchAction({
                 type: 'highlight',
                 seriesIndex: 0,

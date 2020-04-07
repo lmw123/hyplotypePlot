@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:38
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-07 19:17:17
+ * @LastEditTime: 2020-04-07 19:25:03
  */
 import './css/index.css'
 import * as d3 from 'd3';
@@ -24,7 +24,7 @@ import { legendDataCountry } from './legend';
 import { setCountryCoord, drawMap, drawCircle, drawCircle2 } from './mapPlot';
 import { setSimulation } from './simulation';
 
-d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-01&area=china").then(graph => {
+d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-01&area=world").then(graph => {
 
     let uniqueCountry = getUniqueCountry(graph);
     let uniqueDate = getUniqueDate(graph)
@@ -82,7 +82,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
         .links(graph.links);
 
 
-    $("input[name='linkScaleType'],input[name='nodeScaleType'],#linkSize,#nodeSize").on("click", e => {
+    $("input[name='linkScaleType'],input[name='nodeScaleType'],#linkSize,#nodeSize").on("change", e => {
         let linkRange = [parseInt($("#linkSize").val().split(",")[0]), parseInt($("#linkSize").val().split(",")[1])]
         let nodeRange = [parseInt($("#nodeSize").val().split(",")[0]), parseInt($("#nodeSize").val().split(",")[1])]
         console.log({ linkRange, nodeRange })
@@ -247,7 +247,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
 
     // console.log(mapNodeScale.range()[1])
 
-    drawCircle(map, getLatlng, uniqueCountry.map(e => e.name), uniqueCountry.map(e => mapNodeScale(e.count)), colorCustom, globalSearch, nodeHighlight, node, link, chart, uniqueVirus, graph)
+    drawCircle(map, getLatlng, mapNodeScale,uniqueCountry.map(e => e.name), uniqueCountry.map(e => mapNodeScale(e.count)), colorCustom, globalSearch, nodeHighlight, node, link, chart, uniqueVirus, graph)
 
 })
 
