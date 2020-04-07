@@ -4,14 +4,16 @@
  * @Author: Anke Wang
  * @Date: 2020-04-04 15:31:42
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-07 14:03:15
+ * @LastEditTime: 2020-04-07 15:50:55
  * 
  * Code reference:
  * Leaflet Map: https://leafletjs.com/
  */
 
 import * as d3 from 'd3';
-
+import { globalSearch } from './search';
+import { nodeHighlight } from './partsHighlight';
+import { updateNodeTable, updateNodeTableByVirus } from './nodeTable';
 /**
  * @name: setCountryCoord
  * @description: pre calculated, to get dist-latlng
@@ -71,6 +73,16 @@ export const setCountryCoord = () => {
         { "name": "Congo", "lat": -0.228021, "lng": 15.827659, },
         { "name": "Algeria", "lat": 28.033886, "lng": 1.659626, },
         { "name": "SouthAfrica", "lat": -30.559482, "lng": 22.937506, },
+        { "name": "India", "lat": 20.593684, "lng": 78.96288, },
+        { "name": "Austria", "lat": 47.516231, "lng": 14.550072, },
+        { "name": "Alaska", "lat": 64.200844, "lng": -149.493668, },
+        { "name": "Estonia", "lat": 58.595272, "lng": 25.013607, },
+        { "name": "Argentina", "lat": -38.416097, "lng": -63.616672, },
+        { "name": "Israel", "lat": 31.046051, "lng": 34.851612, },
+        { "name": "Slovenia", "lat": 46.151241, "lng": 14.995463, },
+        { "name": "Greece", "lat": 39.074208, "lng": 21.824312, },
+        { "name": "Belarus", "lat": 53.709807, "lng": 27.953389, },
+        { "name": "Latvia", "lat": 56.879635, "lng": 24.603189, },
     ];
 
     let getLatlng = {}
@@ -100,19 +112,41 @@ export const drawMap = () => {
         mbUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
 
     // gray basemap
-    let grayscale = L.tileLayer(mbUrl, { id: 'mapbox/light-v9', tileSize: 512, zoomOffset: -1, attribution: mbAttr });
+    let grayscale = L.tileLayer(mbUrl, { id: 'mapbox/light-v9', tileSize: 512, zoomOffset: -1, attribution: mbAttr }),
+        darkscale = L.tileLayer(mbUrl, { id: 'mapbox/dark-v10', tileSize: 512, zoomOffset: -1, attribution: mbAttr }),
+        outdoor = L.tileLayer(mbUrl, { id: 'mapbox/outdoors-v11', tileSize: 512, zoomOffset: -1, attribution: mbAttr }),
+        streets = L.tileLayer(mbUrl, { id: 'mapbox/streets-v11', tileSize: 512, zoomOffset: -1, attribution: mbAttr }),
+        satellitescale = L.tileLayer(mbUrl, { id: 'mapbox/satellite-v9', tileSize: 512, zoomOffset: -1, attribution: mbAttr });
 
     let mymap = L.map('mapid', {
         center: [40, 170],
         zoom: 2,
+        minZoom: 1,
+        maxZoom: 10,
         layers: grayscale
     });
 
     let baseLayers = {
-        "Grayscale": grayscale,
+        "Gray": grayscale,
+        "Dark": darkscale,
+        "Light": outdoor,
+        "Streets": streets,
+        "Satellite": satellitescale,
     };
 
     L.control.layers(baseLayers).addTo(mymap);
+
+    // get location
+    function onMapClick(e) {
+        // create a custom popup
+        var popupLocation = L.popup();
+        // location: e.latlng.lat, e.latlng.lng
+        // e.latlng -> eg. LatLng(51.50009, -0.08748)
+        popupLocation.setLatLng(e.latlng).setContent("You clicked the map at " + e.latlng.toString()).openOn(mymap);
+
+    }
+    // now add the click event detector to the map
+    // mymap.on('click', onMapClick);
 
     return mymap;
 };
@@ -132,11 +166,14 @@ export const drawMap = () => {
  */
 
 
-export const drawCircle = (basemap, getLatlng, countryName, r, color) => {
+export const drawCircle2 = (basemap, getLatlng, countryName, r, color, search, nodeHighlight, node, link, chart, uniqueVirus) => {
 
     // add a svg to the map
     L.svg().addTo(basemap);
-    
+
+    let nodeScale = d3.scaleSqrt()
+        .domain(d3.extent(r))
+        .range([1, 30])
     // select the svg area and add circles
     d3.select("#mapid")
         .select("svg")
@@ -146,11 +183,18 @@ export const drawCircle = (basemap, getLatlng, countryName, r, color) => {
         .append("circle")
         .attr("cx", function (d) { return basemap.latLngToLayerPoint(getLatlng[d]).x })
         .attr("cy", function (d) { return basemap.latLngToLayerPoint(getLatlng[d]).y })
-        .attr("r", r * 0.1)
-        .style("fill", color)
-        .attr("stroke", color)
-        .attr("stroke-width", 3)
+        .attr("r", (d, i) => {
+            console.log(r[i])
+            return nodeScale(r[i])
+        })
+        .style("fill", (d, i) => color[i])
+        .attr("stroke", (d, i) => color[i])
+        .attr("stroke-width", 0.5)
         .attr("fill-opacity", .4)
+        .on("click", (d) => {
+
+
+        })
 
     // update circle position
     function update() {
@@ -163,15 +207,33 @@ export const drawCircle = (basemap, getLatlng, countryName, r, color) => {
     basemap.on("moveend", update);
 }
 
-/*
-function drawCircle(basemap, getLatlng, countryName, r, color)
-{
-	let lat = getLatlng[countryName].lat;
-	let lng = getLatlng[countryName].lng;
-	L.circle([lat, lng], {radius: r*3500}, {
-		color: color,
-		fillColor: color,
-		fillOpacity: 0.5
-	}).addTo(basemap).bindPopup(countryName+", "+ r);
+
+export const drawCircle = (basemap, getLatlng, countryName, r, color, search, nodeHighlight, node, link, chart, uniqueVirus, graph) => {
+    console.log(color)
+    let lat = getLatlng[countryName][0];
+    let lng = getLatlng[countryName][1];
+    L.circle([lat, lng],  {
+        radius: r * 3500,
+        color: color,
+        fillColor: color,
+        fillOpacity: 0.5
+    }).addTo(basemap).on("click", e => {
+        let res = globalSearch(countryName + "|country", graph)
+        nodeHighlight(node, link, res, 0.2)
+        let filterNodes = graph.nodes.filter(e => res.indexOf(e.id) >= 0)
+        let a = uniqueVirus.filter(e => e.loci.split("-")[0] === countryName)
+        updateNodeTableByVirus(a)
+
+        chart.dispatchAction({
+            type: 'restore'
+        })
+
+        chart.dispatchAction({
+            type: 'highlight',
+            seriesIndex: 0,
+            name: a.map(e => e.date)
+        })
+    })
+        ;
 }
-*/
+

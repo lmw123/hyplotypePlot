@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:38
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-07 14:23:02
+ * @LastEditTime: 2020-04-07 15:53:45
  */
 import './css/index.css'
 import * as d3 from 'd3';
@@ -21,7 +21,7 @@ import 'select2';
 import { drawBarPlot, drawHeatmapDate } from './datePlot';
 import { playStart } from './player';
 import { legendDataCountry } from './legend';
-import { setCountryCoord, drawMap, drawCircle } from './mapPlot';
+import { setCountryCoord, drawMap, drawCircle, drawCircle2 } from './mapPlot';
 
 d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-01&area=world").then(graph => {
 
@@ -95,13 +95,13 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
             .attr("x2", d => d.target.x)
             .attr("y2", d => d.target.y);
 
-        d3.selectAll("path")
+        d3.select("#plot").selectAll("path")
             .attr("transform", d => "translate(" + d.x + "," + d.y + ")")
 
         d3.select("#plot").selectAll("circle").attr("cx", d => d.x)
             .attr("cy", d => d.y);
 
-        d3.selectAll("text.t1")
+        d3.select("#plot").selectAll("text.t1")
             .attr("x", d => d.x)
             .attr("y", d => d.y);
     }
@@ -157,7 +157,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
 
     let chart = drawHeatmapDate(uniqueDate)
     let uniqueVirus = getUniqueVirus(graph)
-    legendDataCountry(graph, uniqueCountry, colorCustom, globalSearch, nodeHighlight, node, link, chart, uniqueVirus);
+    // legendDataCountry(graph, uniqueCountry, colorCustom, globalSearch, nodeHighlight, node, link, chart, uniqueVirus);
     chart.on('mouseover', function (params) {
         chart.dispatchAction({
             type: 'restore'
@@ -210,12 +210,21 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
         link.style('opacity', 1);
     })
 
-    console.log(uniqueCountry)
+
     var map = drawMap();
     var getLatlng = setCountryCoord();
 
     /* ---------------- just for test ----------------------*/
-    drawCircle(map, getLatlng, uniqueCountry.map(e => e.name), 10, 'green');
+    // drawCircle(map, getLatlng, uniqueCountry.map(e => e.name), uniqueCountry.map(e => e.count), colorCustom,globalSearch, nodeHighlight, node, link, chart, uniqueVirus);
+
+    let mapNodeScale = d3.scaleSqrt()
+        .domain(d3.extent(uniqueCountry.map(e => e.count)))
+        .range([2, 200])
+        
+    uniqueCountry.forEach((d,i) => {
+        drawCircle(map, getLatlng, uniqueCountry[i].name, mapNodeScale(uniqueCountry[i].count) , colorCustom[i], globalSearch, nodeHighlight, node, link, chart, uniqueVirus, graph)
+    })
+    
 })
 
 /* ---------------- call function - draw map ----------------------*/
