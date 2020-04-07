@@ -4,7 +4,7 @@
  * @Author: Anke Wang
  * @Date: 2020-04-04 15:31:42
  * @LastEditors: Anke Wang
- * @LastEditTime: 2020-04-07 19:05:32
+ * @LastEditTime: 2020-04-07 19:09:20
  * 
  * Code reference:
  * Leaflet Map: https://leafletjs.com/
@@ -211,10 +211,10 @@ export const drawCircle2 = (basemap, getLatlng, countryName, r, color, search, n
 export const drawCircle = (basemap, getLatlng, mapNodeScale, countryName, r, color, search, nodeHighlight, node, link, chart, uniqueVirus, graph) => {
 
 
-   basemap.eachLayer(function (layer, i) {
-      if( layer._leaflet_id != 24)
-        basemap.removeLayer(layer);
-     // console.log(layer);
+    basemap.eachLayer(function (layer, i) {
+        if (layer._leaflet_id != 24)
+            basemap.removeLayer(layer);
+        // console.log(layer);
     });
 
 
@@ -223,7 +223,7 @@ export const drawCircle = (basemap, getLatlng, mapNodeScale, countryName, r, col
         let lat = getLatlng[d][0];
         let lng = getLatlng[d][1];
 
-       let circlesLayer = L.circleMarker([lat, lng], {
+        let circlesLayer = L.circleMarker([lat, lng], {
             radius: 10 + mapNodeScale(r[i]) * 0.2, //r * 3500,
             color: color[i],
             fillColor: color[i],

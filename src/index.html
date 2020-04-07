@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:16
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-07 14:05:59
+ * @LastEditTime: 2020-04-07 17:13:24
  -->
 <link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.bootcss.com/bootstrap-table/1.16.0/bootstrap-table.min.css" rel="stylesheet">
@@ -12,6 +12,7 @@
 <link href="https://cdn.bootcss.com/select2/4.0.12/css/select2.min.css" rel="stylesheet">
 <link rel='stylesheet' type='text/css' href="https://bigd.big.ac.cn:443/ncov/static/sui/semantic.min.css">
 <link rel="stylesheet" type="text/css" href="https://bigd.big.ac.cn:443/ncov/static/css/my.css" />
+<link href="https://cdn.bootcss.com/bootstrap-slider/10.6.2/css/bootstrap-slider.min.css" rel="stylesheet">
 
 <!-- Leaflet CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
@@ -133,7 +134,7 @@
         <div class="link-table">
             <h4 id="worldMap"></h4>
             <!-------here for map------->
-            
+
         </div>
 
     </div>
@@ -154,25 +155,22 @@
                 </select>
             </div>
 
-
-            <div class="dropdown" hidden>
+            <div class="dropdown">
                 <i class="fas fa-sliders-h" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <form class="dropdown-menu p-4" style="width: 400px;">
                         <div class="form-group">
-                            <label for="exampleFormControlSelect1">Region</label>
-                            <select class="form-control" id="exampleFormControlSelect1" data-stopPropagation="true">
-                                <option data-stopPropagation="true">Global</option>
-                                <option data-stopPropagation="true">Continents</option>
-                                <option data-stopPropagation="true">China</option>
-                            </select>
+                            <label for="branchSize">Branch Size:</label>
+                            <input id="branchSize" type="text" data-stopPropagation="true" />
                         </div>
                         <div class="form-group">
-                            <label for="exampleDropdownFormPassword2">Date</label>
-                            <input data-stopPropagation="true" type="password" class="form-control"
-                                id="exampleDropdownFormPassword2" placeholder="TODO">
+                            <label for="branchSize">Branch Size:</label>
+                            <input id="branchSize" type="text" data-stopPropagation="true" />
+                        </div>
+                        <div class="form-group">
+                            <label for="nodeSize">Node Size:&nbsp;&nbsp;</label>
+                            <input id="nodeSize" type="text" data-stopPropagation="true" />
                         </div>
                     </form>
-
                 </i>
             </div>
 
