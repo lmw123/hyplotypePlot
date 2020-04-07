@@ -3,8 +3,8 @@
  * @version: 
  * @Author: Anke Wang
  * @Date: 2020-04-04 15:31:42
- * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-07 15:50:55
+ * @LastEditors: Anke Wang
+ * @LastEditTime: 2020-04-07 16:58:36
  * 
  * Code reference:
  * Leaflet Map: https://leafletjs.com/
@@ -209,31 +209,39 @@ export const drawCircle2 = (basemap, getLatlng, countryName, r, color, search, n
 
 
 export const drawCircle = (basemap, getLatlng, countryName, r, color, search, nodeHighlight, node, link, chart, uniqueVirus, graph) => {
-    console.log(color)
-    let lat = getLatlng[countryName][0];
-    let lng = getLatlng[countryName][1];
-    L.circle([lat, lng],  {
-        radius: r * 3500,
-        color: color,
-        fillColor: color,
-        fillOpacity: 0.5
-    }).addTo(basemap).on("click", e => {
-        let res = globalSearch(countryName + "|country", graph)
-        nodeHighlight(node, link, res, 0.2)
-        let filterNodes = graph.nodes.filter(e => res.indexOf(e.id) >= 0)
-        let a = uniqueVirus.filter(e => e.loci.split("-")[0] === countryName)
-        updateNodeTableByVirus(a)
 
-        chart.dispatchAction({
-            type: 'restore'
-        })
+    basemap.eachLayer(function (layer) {
+        basemap.removeLayer(layer);
+    });
+    
+    countryName.forEach(function(d,i) {
 
-        chart.dispatchAction({
-            type: 'highlight',
-            seriesIndex: 0,
-            name: a.map(e => e.date)
-        })
-    })
-        ;
+        let lat = getLatlng[d][0];
+        let lng = getLatlng[d][1];
+
+        let circlesLayer = L.circleMarker([lat, lng],  {
+            radius: 10 + r[i] * 0.2, //r * 3500,
+            color: color[i],
+            fillColor: color[i],
+            fillOpacity: 0.5
+        }).addTo(basemap).bindPopup(d).on("click", e => {
+            let res = globalSearch(d + "|country", graph)
+            nodeHighlight(node, link, res, 0.2)
+            let filterNodes = graph.nodes.filter(e => res.indexOf(e.id) >= 0)
+            let a = uniqueVirus.filter(e => e.loci.split("-")[0] === d)
+            updateNodeTableByVirus(a)
+    
+            chart.dispatchAction({
+                type: 'restore'
+            })
+    
+            chart.dispatchAction({
+                type: 'highlight',
+                seriesIndex: 0,
+                name: a.map(e => e.date)
+            })
+        });
+    });
+
 }
 
