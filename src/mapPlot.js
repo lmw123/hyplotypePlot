@@ -4,7 +4,7 @@
  * @Author: Anke Wang
  * @Date: 2020-04-04 15:31:42
  * @LastEditors: Anke Wang
- * @LastEditTime: 2020-04-07 17:14:51
+ * @LastEditTime: 2020-04-07 19:05:32
  * 
  * Code reference:
  * Leaflet Map: https://leafletjs.com/
@@ -208,31 +208,37 @@ export const drawCircle2 = (basemap, getLatlng, countryName, r, color, search, n
 }
 
 
-export const drawCircle = (basemap, getLatlng, countryName, r, color, search, nodeHighlight, node, link, chart, uniqueVirus, graph) => {
+export const drawCircle = (basemap, getLatlng, mapNodeScale, countryName, r, color, search, nodeHighlight, node, link, chart, uniqueVirus, graph) => {
 
-    clearMarkers(basemap);
-    
-    countryName.forEach(function(d,i) {
+
+   basemap.eachLayer(function (layer, i) {
+      if( layer._leaflet_id != 24)
+        basemap.removeLayer(layer);
+     // console.log(layer);
+    });
+
+
+    countryName.forEach(function (d, i) {
 
         let lat = getLatlng[d][0];
         let lng = getLatlng[d][1];
 
-        let circlesLayer = L.circleMarker([lat, lng],  {
+       let circlesLayer = L.circleMarker([lat, lng], {
             radius: 10 + mapNodeScale(r[i]) * 0.2, //r * 3500,
             color: color[i],
             fillColor: color[i],
             fillOpacity: 0.5
-        }).addTo(circleGroup).bindPopup(d+":"+r[i]+" isloates").on("click", e => {
+        }).addTo(basemap).bindPopup(d + ": " + r[i] + " isloates").on("click", e => {
             let res = globalSearch(d + "|country", graph)
             nodeHighlight(node, link, res, 0.2)
             let filterNodes = graph.nodes.filter(e => res.indexOf(e.id) >= 0)
             let a = uniqueVirus.filter(e => e.loci.split("-")[0] === d)
             updateNodeTableByVirus(a)
-    
+
             chart.dispatchAction({
                 type: 'restore'
             })
-    
+
             chart.dispatchAction({
                 type: 'highlight',
                 seriesIndex: 0,
