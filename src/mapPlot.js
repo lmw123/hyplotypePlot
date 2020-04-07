@@ -4,7 +4,7 @@
  * @Author: Anke Wang
  * @Date: 2020-04-04 15:31:42
  * @LastEditors: Anke Wang
- * @LastEditTime: 2020-04-07 19:27:09
+ * @LastEditTime: 2020-04-07 19:28:16
  * 
  * Code reference:
  * Leaflet Map: https://leafletjs.com/
@@ -211,7 +211,7 @@ export const drawCircle2 = (basemap, getLatlng, countryName, r, color, search, n
 export const drawCircle = (basemap, getLatlng, mapNodeScale, countryName, r, color, search, nodeHighlight, node, link, chart, uniqueVirus, graph) => {
 
 
-    basemap.eachLayer(function (layer, i) {
+    basemap.eachLayer(function (layer) {
         if (layer.id == 'mycircle')
             basemap.removeLayer(layer);
     });
