@@ -4,7 +4,7 @@
  * @Author: Anke Wang
  * @Date: 2020-04-04 15:31:42
  * @LastEditors: Anke Wang
- * @LastEditTime: 2020-04-07 16:58:36
+ * @LastEditTime: 2020-04-07 17:14:51
  * 
  * Code reference:
  * Leaflet Map: https://leafletjs.com/
@@ -210,9 +210,7 @@ export const drawCircle2 = (basemap, getLatlng, countryName, r, color, search, n
 
 export const drawCircle = (basemap, getLatlng, countryName, r, color, search, nodeHighlight, node, link, chart, uniqueVirus, graph) => {
 
-    basemap.eachLayer(function (layer) {
-        basemap.removeLayer(layer);
-    });
+    clearMarkers(basemap);
     
     countryName.forEach(function(d,i) {
 
@@ -220,11 +218,11 @@ export const drawCircle = (basemap, getLatlng, countryName, r, color, search, no
         let lng = getLatlng[d][1];
 
         let circlesLayer = L.circleMarker([lat, lng],  {
-            radius: 10 + r[i] * 0.2, //r * 3500,
+            radius: 10 + mapNodeScale(r[i]) * 0.2, //r * 3500,
             color: color[i],
             fillColor: color[i],
             fillOpacity: 0.5
-        }).addTo(basemap).bindPopup(d).on("click", e => {
+        }).addTo(circleGroup).bindPopup(d+":"+r[i]+" isloates").on("click", e => {
             let res = globalSearch(d + "|country", graph)
             nodeHighlight(node, link, res, 0.2)
             let filterNodes = graph.nodes.filter(e => res.indexOf(e.id) >= 0)
