@@ -3,8 +3,8 @@
  * @version: 
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:38
- * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-06 16:29:42
+ * @LastEditors: Anke Wang
+ * @LastEditTime: 2020-04-07 12:48:57
  */
 import './css/index.css'
 import * as d3 from 'd3';
@@ -21,6 +21,7 @@ import 'select2';
 import { drawBarPlot, drawHeatmapDate } from './datePlot';
 import { playStart } from './player';
 import { legendDataCountry } from './legend';
+import { setCountryCoord, drawMap, drawCircle } from './mapPlot';
 
 d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-01&area=world").then(graph => {
 
@@ -98,7 +99,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
         d3.selectAll("path")
             .attr("transform", d => "translate(" + d.x + "," + d.y + ")")
 
-        d3.selectAll("circle").attr("cx", d => d.x)
+        d3.select("#plot").selectAll("circle").attr("cx", d => d.x)
             .attr("cy", d => d.y);
 
         d3.selectAll("text.t1")
@@ -169,7 +170,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
         })
         let res = globalSearch(params.value[0] + "|date", graph)
         nodeHighlight(node, link, res, 0.2);
-        console.log(params)
+        //console.log(params)
         let a = uniqueVirus.filter(e => e.date === params.value[0])
         updateNodeTableByVirus(a)
         // updateNodeTable(graph.nodes.filter(e => res.indexOf(e.id) >= 0))
@@ -211,3 +212,9 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
     })
 })
 
+/* ---------------- call function - draw map ----------------------*/
+var map = drawMap();
+var getLatlng = setCountryCoord();
+
+/* ---------------- just for test ----------------------*/
+drawCircle(map, getLatlng, ['China','Japan','Singapore','UnitedStates'], 246, 'red');

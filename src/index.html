@@ -3,8 +3,8 @@
  * @version: 
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:16
- * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-06 17:38:58
+ * @LastEditors: Anke Wang
+ * @LastEditTime: 2020-04-07 12:49:27
  -->
 <link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.bootcss.com/bootstrap-table/1.16.0/bootstrap-table.min.css" rel="stylesheet">
@@ -12,6 +12,16 @@
 <link href="https://cdn.bootcss.com/select2/4.0.12/css/select2.min.css" rel="stylesheet">
 <link rel='stylesheet' type='text/css' href="https://bigd.big.ac.cn:443/ncov/static/sui/semantic.min.css">
 <link rel="stylesheet" type="text/css" href="https://bigd.big.ac.cn:443/ncov/static/css/my.css" />
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+crossorigin=""/>
+<!-- Make sure put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+crossorigin=""></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 
 
 <script src="https://bigd.big.ac.cn:443/ncov/static/js/jquery-1.11.3.min.js"></script>
@@ -110,12 +120,19 @@
         <div class="node-table">
             <div id="legendPanel" style="height:100%;"></div>
         </div>
-
+<!-------
         <div class="link-table">
             <h4 id="linkInfo"></h4>
             <div class="table-responsive">
                 <table id="linkTable" class="table"></table>
             </div>
+        </div>
+------->
+
+        <div class="link-table">
+            <h4 id="worldMap"></h4>
+            <!-------here for map------->
+            <div id="mapid"></div>
         </div>
 
     </div>
