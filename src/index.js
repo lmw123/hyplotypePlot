@@ -4,14 +4,14 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:38
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-07 17:03:46
+ * @LastEditTime: 2020-04-07 19:17:17
  */
 import './css/index.css'
 import * as d3 from 'd3';
 import { getUniqueCountry, getUniqueDate, getUniqueVirus } from './dataProcess';
 import { buildNode } from './buildNode';
-import { nodeLink, nodeLinkScale } from './nodeLink';
-import { defaultColor, bootstrapBehaviors, linkSizeRange } from './plotConfig';
+import { nodeLink, setScale } from './nodeLink';
+import { defaultColor, bootstrapBehaviors, linkRange, nodeRange } from './plotConfig';
 import { refreshNodeTable, updateNodeTable, updateNodeTableByVirus } from './nodeTable';
 import { formatSelectData, globalSearch } from './search';
 import { nodeHighlight, linkHighlight } from './partsHighlight';
@@ -22,12 +22,20 @@ import { drawBarPlot, drawHeatmapDate } from './datePlot';
 import { playStart } from './player';
 import { legendDataCountry } from './legend';
 import { setCountryCoord, drawMap, drawCircle, drawCircle2 } from './mapPlot';
+import { setSimulation } from './simulation';
 
-d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-01&area=world").then(graph => {
+d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-01&area=china").then(graph => {
+
+    let uniqueCountry = getUniqueCountry(graph);
+    let uniqueDate = getUniqueDate(graph)
+    let uniqueVirus = getUniqueVirus(graph)
 
     let colorCustom = defaultColor;
-    let { lineScale, nodeScale, lineScale2 } = nodeLinkScale(graph);
-    let uniqueCountry = getUniqueCountry(graph);
+    let nodeExtent = d3.extent(graph.nodes.map(a => a.radius))
+    let linkExtent = d3.extent(graph.links.map(a => a.distance))
+
+    let nodeScale = setScale("sqrt", nodeExtent, nodeRange)
+    let linkScale = setScale("sqrt", linkExtent, linkRange)
 
     let width = $('.network-panel').width();
     let height = $('.network-panel').height();
@@ -60,20 +68,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
 
     let { node, link } = nodeLink(graph, plotCanvas)
 
-    let simulation = d3.forceSimulation()
-        .force("link", d3.forceLink()
-            .id(d => d.id)
-            .distance(d => lineScale(d.distance) + nodeScale(d.source.radius) / 2 + (d.target.radius) / 2).strength(1))
-        .force("charge", d3.forceManyBody().distanceMax(linkSizeRange[1]).distanceMin(linkSizeRange[0]).strength(-2))
-        .force("center", d3.forceCenter(width / 2, height / 2))
-        .force('x', d3.forceX().strength(0.01))
-        .force('y', d3.forceY().strength(0.01 * height / width))
-
-    node
-        .call(d3.drag()
-            .on("start", dragstarted)
-            .on("drag", dragged)
-            .on("end", dragended));
+    let simulation = setSimulation(linkScale, nodeScale, width, height)
 
     node.each(function (d) {
         buildNode(d3.select(this), nodeScale(d.radius), d.pieChart, uniqueCountry, colorCustom, d.id)
@@ -85,6 +80,40 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
 
     simulation.force("link")
         .links(graph.links);
+
+
+    $("input[name='linkScaleType'],input[name='nodeScaleType'],#linkSize,#nodeSize").on("click", e => {
+        let linkRange = [parseInt($("#linkSize").val().split(",")[0]), parseInt($("#linkSize").val().split(",")[1])]
+        let nodeRange = [parseInt($("#nodeSize").val().split(",")[0]), parseInt($("#nodeSize").val().split(",")[1])]
+        console.log({ linkRange, nodeRange })
+
+        linkScale = setScale($("input[name='linkScaleType']:checked").val(), linkExtent, linkRange)
+        nodeScale = setScale($("input[name='nodeScaleType']:checked").val(), nodeExtent, nodeRange)
+
+        simulation.stop()
+        simulation = setSimulation(linkScale, nodeScale, width, height)
+        simulation
+            .nodes(graph.nodes)
+            .on("tick", ticked);
+
+        simulation.force("link")
+            .links(graph.links);
+        
+            
+        d3.selectAll("#plot>svg>.nodes>g>*").remove()
+
+        node.each(function (d) {
+            buildNode(d3.select(this), nodeScale(d.radius), d.pieChart, uniqueCountry, colorCustom, d.id)
+        });
+
+    });
+
+
+    node
+        .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended));
 
     function ticked() {
 
@@ -143,7 +172,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
         }
     };
 
-    let uniqueDate = getUniqueDate(graph)
+
     bootstrapBehaviors(uniqueCountry, uniqueDate)
 
     $('#searchBar').on('select2:select', function (e) {
@@ -151,7 +180,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
     });
 
     let chart = drawHeatmapDate(uniqueDate)
-    let uniqueVirus = getUniqueVirus(graph)
+
     // legendDataCountry(graph, uniqueCountry, colorCustom, globalSearch, nodeHighlight, node, link, chart, uniqueVirus);
     chart.on('mouseover', function (params) {
         chart.dispatchAction({
@@ -216,6 +245,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
         .domain(d3.extent(uniqueCountry.map(e => e.count)))
         .range([2, 200])
 
+    // console.log(mapNodeScale.range()[1])
 
     drawCircle(map, getLatlng, uniqueCountry.map(e => e.name), uniqueCountry.map(e => mapNodeScale(e.count)), colorCustom, globalSearch, nodeHighlight, node, link, chart, uniqueVirus, graph)
 

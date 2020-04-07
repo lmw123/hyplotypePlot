@@ -3,13 +3,8 @@
  * @version: 
  * @Author: Anke Wang
  * @Date: 2020-04-04 15:31:42
-<<<<<<< HEAD
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-07 17:19:37
-=======
- * @LastEditors: Anke Wang
- * @LastEditTime: 2020-04-07 17:14:51
->>>>>>> 219e5ac11eca2d15eeb069ece47a20cc2809c75e
+ * @LastEditTime: 2020-04-07 17:23:01
  * 
  * Code reference:
  * Leaflet Map: https://leafletjs.com/
