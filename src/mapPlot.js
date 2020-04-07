@@ -4,7 +4,7 @@
  * @Author: Anke Wang
  * @Date: 2020-04-04 15:31:42
  * @LastEditors: Anke Wang
- * @LastEditTime: 2020-04-07 12:58:27
+ * @LastEditTime: 2020-04-07 13:19:05
  * 
  * Code reference:
  * Leaflet Map: https://leafletjs.com/
@@ -162,3 +162,16 @@ export const drawCircle = (basemap, getLatlng, countryName, r, color) => {
     // zoom or drag - update circle position
     basemap.on("moveend", update);
 }
+
+/*
+function drawCircle(basemap, getLatlng, countryName, r, color)
+{
+	let lat = getLatlng[countryName].lat;
+	let lng = getLatlng[countryName].lng;
+	L.circle([lat, lng], {radius: r*3500}, {
+		color: color,
+		fillColor: color,
+		fillOpacity: 0.5
+	}).addTo(basemap).bindPopup(countryName+", "+ r);
+}
+*/
