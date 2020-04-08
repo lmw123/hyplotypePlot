@@ -4,10 +4,12 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 13:52:46
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-05 21:41:16
+ * @LastEditTime: 2020-04-08 10:08:05
  */
 
 import * as d3 from 'd3';
+import { defaultColor } from './plotConfig';
+
 export const getUniqueCountry = (data) => {
 
     let country = data.nodes.map(a => a.pieChart.map(a => a.color))
@@ -18,7 +20,12 @@ export const getUniqueCountry = (data) => {
 
     //safari sort 兼容性有问题
     data.nodes.forEach(a => a.pieChart.forEach(b => countCount[uniqueCountry.indexOf(b.color)] += a.radius * b.percent))
-    uniqueCountry.forEach((a, i) => uniqueCountry[i] = {"name": a, "count": Math.round(countCount[i]/100)})
+    uniqueCountry.forEach((a, i) => uniqueCountry[i] = {
+        "name": a, 
+        "count": Math.round(countCount[i]/100),
+        "color": defaultColor[i]
+    })
+    
     uniqueCountry.sort((a, b) => {
         return (b.count > a.count) ? 1 : (b.count < a.count) ? -1 : 0;
     })
@@ -31,7 +38,6 @@ export const getUniqueDate = (data) => {
     let date = data.nodes.map(a => a.Virus.map(a => a.date))
     let dataAll = []
     date.forEach(c => dataAll = dataAll.concat(c))
-    // uniqueDate = Array.from(new Set(uniqueDate))
     let dateCount = dataAll.reduce(function (allNames, name) { if (name in allNames) { allNames[name]++; } else if(name.length === 10){ allNames[name] = 1; } return allNames; }, {});
 
     let dateSort = Object.keys(dateCount).sort();

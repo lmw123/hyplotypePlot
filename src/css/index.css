@@ -51,14 +51,15 @@ body {
 
 .date-plot-panel {
     position: relative;
-    flex: 1 1 25%;
+    flex: 3;
+    height: 30%;
     overflow: scroll;
-    height: 25%;
 }
 
 .network-panel {
     position: relative;
-    flex: 1 1 75%;
+    flex: 7;
+    height: 70%;
     overflow: scroll
 }
 

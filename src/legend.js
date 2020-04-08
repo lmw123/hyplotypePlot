@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 15:46:52
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-06 15:58:51
+ * @LastEditTime: 2020-04-08 10:05:38
  */
 import * as d3 from 'd3';
 import { globalSearch } from './search';
@@ -45,7 +45,7 @@ export const legendDataCountry = (graph, country, colorCustom, search, nodeHighl
             nodeHighlight(node, link, res, 0.2)
             let filterNodes = graph.nodes.filter(e => res.indexOf(e.id) >= 0)
             let a = uniqueVirus.filter(e => e.loci.split("-")[0] === d.name)
-            updateNodeTableByVirus(a)
+            // updateNodeTableByVirus(a)
             
             chart.dispatchAction({
                 type: 'restore'

@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 14:18:49
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-04 16:09:33
+ * @LastEditTime: 2020-04-08 10:14:03
  */
 import * as d3 from 'd3';
 
@@ -17,7 +17,7 @@ const drawParentCircle = (nodeElement, radius, id) => {
         ;
 }
 
-const drawPieChart = (nodeElement, radius, percentages, uniqueCountry, colorCustom) => {
+const drawPieChart = (nodeElement, radius, percentages, uniqueCountry) => {
 
     var halfRadius = radius / 2;
     var halfCircumference = 2 * Math.PI * halfRadius;
@@ -29,6 +29,7 @@ const drawPieChart = (nodeElement, radius, percentages, uniqueCountry, colorCust
 
     var percentToDraw = 0;
     for (var p in percentages) {
+        let pieColor = uniqueCountry.filter(e => e.name === percentages[p].color)[0].color
         nodeElement
             .insert('path', '#parent-pie + *')
             .attr('d', arc({
@@ -37,8 +38,8 @@ const drawPieChart = (nodeElement, radius, percentages, uniqueCountry, colorCust
                 startAngle: Math.PI * 2 * percentToDraw / 100,
                 endAngle: Math.PI * 2 * (percentToDraw + percentages[p].percent) / 100
             }))
-            .attr('fill', colorCustom[uniqueCountry.map(a => a.name).indexOf(percentages[p].color)])
-            .attr("stroke", colorCustom[uniqueCountry.map(a => a.name).indexOf(percentages[p].color)])
+            .attr('fill', pieColor)
+            .attr("stroke", pieColor)
             .attr("class", percentages[p].color)
             .on("mouseleave", d => {
                 d3.select("#test").remove()
@@ -51,7 +52,7 @@ const drawPieChart = (nodeElement, radius, percentages, uniqueCountry, colorCust
 
 }
 
-export const buildNode = (nodeElement, radius, percentages, uniqueCountry, colorCustom, id) => {
+export const buildNode = (nodeElement, radius, percentages, uniqueCountry, id) => {
     drawParentCircle(nodeElement, radius, id);
-    drawPieChart(nodeElement, radius, percentages, uniqueCountry, colorCustom);
+    drawPieChart(nodeElement, radius, percentages, uniqueCountry);
 }

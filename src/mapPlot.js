@@ -4,7 +4,7 @@
  * @Author: Anke Wang
  * @Date: 2020-04-04 15:31:42
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-07 19:22:39
+ * @LastEditTime: 2020-04-08 16:42:24
  * 
  * Code reference:
  * Leaflet Map: https://leafletjs.com/
@@ -165,61 +165,22 @@ export const drawMap = () => {
  * @detail: 
  */
 
+export const drawCircle = (basemap, getLatlng, countryName, r, color, node, link, chart, uniqueVirus, graph) => {
 
-export const drawCircle2 = (basemap, getLatlng, countryName, r, color, search, nodeHighlight, node, link, chart, uniqueVirus) => {
 
-    // add a svg to the map
-    L.svg().addTo(basemap);
-
-    let nodeScale = d3.scaleSqrt()
+    let mapNodeScale = d3.scaleSqrt()
         .domain(d3.extent(r))
-        .range([1, 30])
-    // select the svg area and add circles
-    d3.select("#mapid")
-        .select("svg")
-        .selectAll("myCircles")
-        .data(countryName)
-        .enter()
-        .append("circle")
-        .attr("cx", function (d) { return basemap.latLngToLayerPoint(getLatlng[d]).x })
-        .attr("cy", function (d) { return basemap.latLngToLayerPoint(getLatlng[d]).y })
-        .attr("r", (d, i) => {
-            console.log(r[i])
-            return nodeScale(r[i])
-        })
-        .style("fill", (d, i) => color[i])
-        .attr("stroke", (d, i) => color[i])
-        .attr("stroke-width", 0.5)
-        .attr("fill-opacity", .4)
-        .on("click", (d) => {
+        .range([2, 200])
 
-
-        })
-
-    // update circle position
-    function update() {
-        d3.select("#mapid").selectAll("circle")
-            .attr("cx", function (d) { return basemap.latLngToLayerPoint(getLatlng[d]).x })
-            .attr("cy", function (d) { return basemap.latLngToLayerPoint(getLatlng[d]).y })
-    }
-
-    // zoom or drag - update circle position
-    basemap.on("moveend", update);
-}
-
-
-export const drawCircle = (basemap, getLatlng, mapNodeScale, countryName, r, color, search, nodeHighlight, node, link, chart, uniqueVirus, graph) => {
-
-
-    basemap.eachLayer(function (layer, i) {
-        if (layer._leaflet_id != 24)
+        
+    basemap.eachLayer(function (layer) {
+        if (layer.id == 'mycircle')
             basemap.removeLayer(layer);
-        // console.log(layer);
     });
 
 
     countryName.forEach(function (d, i) {
-        console.log(d)
+        
         let lat = getLatlng[d][0];
         let lng = getLatlng[d][1];
 
@@ -245,7 +206,8 @@ export const drawCircle = (basemap, getLatlng, mapNodeScale, countryName, r, col
                 name: a.map(e => e.date)
             })
         });
+
+        circlesLayer.id = 'mycircle';
     });
 
 }
-

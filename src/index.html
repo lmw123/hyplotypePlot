@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:16
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-07 19:00:14
+ * @LastEditTime: 2020-04-08 17:59:52
  -->
 <link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.bootcss.com/bootstrap-table/1.16.0/bootstrap-table.min.css" rel="stylesheet">
@@ -29,6 +29,8 @@
 
 <!-- <script src="https://bigd.big.ac.cn:443/ncov/static/js/bootstrap.min.js"></script> -->
 <script src="https://bigd.big.ac.cn:443/ncov/static/sui/semantic.min.js"></script>
+
+<!-- <script src="https://cdn.bootcss.com/echarts/4.7.0/echarts.min.js"></script> -->
 
 <div class="ui vertical sidebar menu">
     <a class="item" href="https://bigd.big.ac.cn" target="_blank"><img class="ui tiny image"
@@ -118,24 +120,22 @@
 
     <div class="sidebar-panel">
 
-        <div class="node-table">
-            <div id="legendPanel" style="height:100%;" hidden></div>
+        
+  
+        <div class="link-table">
+            <!-- <h4 id="linkInfo"></h4> -->
             <div id="mapid"></div>
         </div>
-        <!-------
-        <div class="link-table">
-            <h4 id="linkInfo"></h4>
-            <div class="table-responsive">
-                <table id="linkTable" class="table"></table>
-            </div>
-        </div>
-------->
 
-        <div class="link-table">
-            <h4 id="worldMap"></h4>
-            <!-------here for map------->
+        
 
+        <div class="node-table">
+            <h3 id="linkInfo"> </h3>
+            <table id="linkTable"> </table>
         </div>
+
+
+        
 
     </div>
 
@@ -143,6 +143,19 @@
 
         <div class="network-panel">
 
+
+            <div class="form-group" style="position: absolute; bottom: 2px; left: 100px;">
+                <label for="speed">Speed</label>
+                <select class="form-control" id="speed">
+                    <option value="10">10ms/day</option>
+                  <option value="50">50ms/day</option>
+                  <option value="100" selected>100ms/day</option>
+                  <option value="500">500ms/day</option>
+                  <option value="1000">1000ms/day</option>
+                </select>
+              </div>
+
+              
             <i class="fas fa-question-circle" data-trigger="hover" data-container="body" data-toggle="popover"
                 data-placement="bottom"
                 data-content="Haplotype maps of novel coronavirus across the whole world and China are constructed, respectively, based on the genome variation information obtained from available high-quality genome sequences.">
@@ -226,10 +239,10 @@
         </div>
 
         <div class="date-plot-panel">
-            <div id="barPlotControl">
-                <i class="fas fa-globe-americas" style="margin-bottom: 2px;"></i><br>
-                <i class="fas fa-calendar-alt"></i>
-            </div>
+            <!-- <div id="barPlotControl"> -->
+                <!-- <i class="fas fa-globe-americas" style="margin-bottom: 2px;"></i><br> -->
+                <!-- <i class="fas fa-calendar-alt"></i> -->
+            <!-- </div> -->
             <div id="datePlot"></div>
         </div>
     </div>
