@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:38
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-08 16:42:10
+ * @LastEditTime: 2020-04-08 22:16:32
  */
 import './css/index.css'
 import * as d3 from 'd3';
@@ -24,7 +24,7 @@ import { legendDataCountry } from './legend';
 import { setCountryCoord, drawMap, drawCircle } from './mapPlot';
 import { setSimulation } from './simulation';
 
-d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-01&area=world").then(graph => {
+d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-01&area=china").then(graph => {
 
     let uniqueCountry = getUniqueCountry(graph);
     let uniqueDate = getUniqueDate(graph)
@@ -200,14 +200,14 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
     // $(".fa-calendar-alt").on("click", () => drawHeatmapDate(uniqueDate))
 
 
-    var map = drawMap();
-    var getLatlng = setCountryCoord();
+    // var map = drawMap();
+    // var getLatlng = setCountryCoord();
 
-    drawCircle(map, getLatlng, uniqueCountry.map(e => e.name), uniqueCountry.map(e => e.count), uniqueCountry.map(e => e.color),  node, link, chart, uniqueVirus, graph)
+    // drawCircle(map, getLatlng, uniqueCountry.map(e => e.name), uniqueCountry.map(e => e.count), uniqueCountry.map(e => e.color),  node, link, chart, uniqueVirus, graph)
 
     $(".fa-play-circle").on("click", () => {
         playStart($(".fa-play-circle"), uniqueDate, graph, node, link, chart,
-        map, getLatlng, uniqueVirus, uniqueCountry)
+            map, getLatlng, uniqueVirus, uniqueCountry)
     })
 
     $(".fa-redo").on("click", () => {
@@ -219,5 +219,65 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
     })
 
 
+    Promise
+        .all([
+            d3.tsv("https://bigd.big.ac.cn/ewas/haplotypetest/gene_structure.tsv"),
+            d3.tsv('https://bigd.big.ac.cn/ewas/haplotypetest/nsp.tsv')
+        ]).then(([geneData, nspData]) => {
+            let geneWidth = $(".node-table").width();
+            let geneHeight = $(".node-table").height();
+            let xGeneScale = d3.scaleLinear()
+                .domain(d3.extent([0, 29903]))
+                .range([0, geneWidth - 30])
+                .nice();
+
+            let xAxis = d3.axisBottom(xGeneScale)
+                .tickSize(10)
+                .tickPadding(3);
+
+            let geneCanvas = d3.select(".node-table").append("svg")
+                .attr("width", geneWidth)
+                .attr("height", geneHeight);
+
+            const xAxisCanvas = geneCanvas.append('g')
+                .attr('transform', `translate(10, ${geneHeight - 50})`);
+
+            let xAxisG = xAxisCanvas.append('g')
+                .call(xAxis)
+                .attr('transform', `translate(0,0)`);
+
+            let geneStruCanvas = geneCanvas.append('g')
+                .attr('transform', `translate(10, ${geneHeight - 80})`);
+
+            geneStruCanvas.selectAll('rect').data(geneData)
+                .enter().append('rect')
+                .attr('x', (d) => xGeneScale(d.start))
+                .attr('width', d => xGeneScale(d.end - d.start + 1))
+                .attr('height', 20)
+                .attr('fill', (d, i) => colorCustom[i]);
+
+            let nspCanvas = geneCanvas.append('g')
+                .attr('transform', `translate(10, ${geneHeight - 140})`);
+
+            nspCanvas.selectAll('rect').data(nspData)
+                .enter().append('rect')
+                .attr('x', (d) => xGeneScale(d.start))
+                .attr('width', d => xGeneScale(d.end - d.start + 1))
+                .attr('height', 20)
+                .attr("y", (d, i) => i % 2 == 0 ? 20 : 0)
+                .attr('fill', "gray");
+            
+            nspCanvas.selectAll('text').data(nspData)
+                .enter().append('text')
+                .attr('x', (d) => xGeneScale(d.start)+ xGeneScale(d.end - d.start + 1)/2-3)
+                .attr("y", (d, i) => i % 2 == 1 ? 48 : -3)
+                .text((d,i) => i+1)
+                .attr("font-size", "10px")
+
+        });
+
+
 })
+
+
 
