@@ -4,7 +4,7 @@
  * @Author: Anke Wang
  * @Date: 2020-04-04 15:31:42
  * @LastEditors: Anke Wang
- * @LastEditTime: 2020-04-09 01:06:29
+ * @LastEditTime: 2020-04-09 01:10:29
  * 
  * Code reference:
  * Leaflet Map: https://leafletjs.com/
@@ -150,7 +150,7 @@ export const drawMap = () => {
 
     }
     // now add the click event detector to the map
-    mymap.on('click', onMapClick);
+    // mymap.on('click', onMapClick);
 
     return mymap;
 };
