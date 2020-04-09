@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:38
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-09 17:40:53
+ * @LastEditTime: 2020-04-09 17:56:44
  */
 import './css/index.css'
 import * as d3 from 'd3';
@@ -12,15 +12,15 @@ import { getUniqueCountry, getUniqueDate, getUniqueVirus } from './dataProcess';
 import { buildNode } from './buildNode';
 import { nodeLink, setScale } from './nodeLink';
 import { defaultColor, defaultBehaviors, linkRange, nodeRange } from './plotConfig';
-import { refreshNodeTable, updateNodeTable, updateNodeTableByVirus } from './nodeTable';
+// import { refreshNodeTable, updateNodeTable, updateNodeTableByVirus } from './nodeTable';
 import { globalSearch } from './search';
 import { nodeHighlight, linkHighlight } from './partsHighlight';
 import 'bootstrap';
-import 'bootstrap-table';
+// import 'bootstrap-table';
 import 'select2';
 import { drawBarPlot, drawHeatmapDate } from './datePlot';
 import { playStart } from './player';
-import { legendDataCountry } from './legend';
+// import { legendDataCountry } from './legend';
 import { setCountryCoord, drawMap, drawCircle } from './mapPlot';
 import { setSimulation } from './simulation';
 import { drawGeneStructure } from './geneSturcture';
@@ -151,7 +151,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
         d.fy = null;
     }
 
-    refreshNodeTable(graph.nodes)
+    // refreshNodeTable(graph.nodes)
 
 
     defaultBehaviors(uniqueCountry, uniqueDate, graph)
@@ -175,7 +175,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
         let res = globalSearch(params.value[0] + "|date", graph)
         nodeHighlight(node, link, res, 0.2);
         let a = uniqueVirus.filter(e => e.date === params.value[0])
-        updateNodeTableByVirus(a)
+        // updateNodeTableByVirus(a)
         // updateNodeTable(graph.nodes.filter(e => res.indexOf(e.id) >= 0))
     });
 
@@ -185,7 +185,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
     });
 
     node.on("click", d => {
-        updateNodeTable([d])
+        // updateNodeTable([d])
         nodeHighlight(node, link, d.id, 0.2)
         chart.dispatchAction({
             type: 'restore'

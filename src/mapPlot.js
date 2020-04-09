@@ -13,7 +13,7 @@
 import * as d3 from 'd3';
 import { globalSearch } from './search';
 import { nodeHighlight } from './partsHighlight';
-import { updateNodeTable, updateNodeTableByVirus } from './nodeTable';
+// import { updateNodeTable, updateNodeTableByVirus } from './nodeTable';
 /**
  * @name: setCountryCoord
  * @description: pre calculated, to get dist-latlng
@@ -194,7 +194,7 @@ export const drawCircle = (basemap, getLatlng, countryName, r, color, node, link
             nodeHighlight(node, link, res, 0.2)
             let filterNodes = graph.nodes.filter(e => res.indexOf(e.id) >= 0)
             let a = uniqueVirus.filter(e => e.loci.split("-")[0] === d)
-            updateNodeTableByVirus(a)
+            // updateNodeTableByVirus(a)
 
             chart.dispatchAction({
                 type: 'restore'
