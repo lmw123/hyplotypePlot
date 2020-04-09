@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:38
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-09 17:56:44
+ * @LastEditTime: 2020-04-09 19:56:07
  */
 import './css/index.css'
 import * as d3 from 'd3';
@@ -25,7 +25,7 @@ import { setCountryCoord, drawMap, drawCircle } from './mapPlot';
 import { setSimulation } from './simulation';
 import { drawGeneStructure } from './geneSturcture';
 
-d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-01&area=china").then(graph => {
+d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-01&area=world").then(graph => {
     
     let uniqueCountry = getUniqueCountry(graph);
     let uniqueDate = getUniqueDate(graph)
@@ -201,10 +201,10 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
     // $(".fa-calendar-alt").on("click", () => drawHeatmapDate(uniqueDate))
 
 
-    // var map = drawMap();
-    // var getLatlng = setCountryCoord();
+    var map = drawMap();
+    var getLatlng = setCountryCoord();
 
-    // drawCircle(map, getLatlng, uniqueCountry.map(e => e.name), uniqueCountry.map(e => e.count), uniqueCountry.map(e => e.color),  node, link, chart, uniqueVirus, graph)
+    drawCircle(map, getLatlng, uniqueCountry.map(e => e.name), uniqueCountry.map(e => e.count), uniqueCountry.map(e => e.color),  node, link, chart, uniqueVirus, graph)
 
     $(".fa-play-circle").on("click", () => {
         playStart($(".fa-play-circle"), uniqueDate, graph, node, link, chart,
@@ -220,14 +220,8 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
     })
 
 
-    drawGeneStructure(colorCustom, 'https://bigd.big.ac.cn/ewas/haplotypetest/2019-nCoV_3437_altCoverage.tsv')
+    drawGeneStructure(colorCustom)
 
-    $('#aa').on('click', function() {
-        drawGeneStructure(colorCustom, 'https://bigd.big.ac.cn/ewas/haplotypetest/2019-nCoV_3437_amioCoverage.tsv')
-    })
-    $('#nt').on('click', function() {
-        drawGeneStructure(colorCustom, 'https://bigd.big.ac.cn/ewas/haplotypetest/2019-nCoV_3437_altCoverage.tsv')
-    })
 
 })
 

@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-09 12:26:16
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-09 17:43:53
+ * @LastEditTime: 2020-04-09 19:59:09
  */
 
 import * as d3 from 'd3';
@@ -16,10 +16,9 @@ export const drawGeneStructure = (colorCustom, type) => {
         .all([
             d3.tsv("https://bigd.big.ac.cn/ewas/haplotypetest/gene_structure.tsv"),
             d3.tsv('https://bigd.big.ac.cn/ewas/haplotypetest/nsp.tsv'),
-            d3.tsv(type)
-            // d3.tsv('https://bigd.big.ac.cn/ewas/haplotypetest/2019-nCoV_3437_altCoverage.tsv'),
-            // d3.tsv('https://bigd.big.ac.cn/ewas/haplotypetest/2019-nCoV_3437_amioCoverage.tsv')
-        ]).then(([geneData, nspData, altData]) => {
+            d3.tsv('https://bigd.big.ac.cn/ewas/haplotypetest/2019-nCoV_3437_altCoverage.tsv'),
+            d3.tsv('https://bigd.big.ac.cn/ewas/haplotypetest/2019-nCoV_3437_amioCoverage.tsv')
+        ]).then(([geneData, nspData, altData, amioData]) => {
 
             geneData.forEach((e, i) => {
                 e.color = colorCustom[i];
@@ -27,7 +26,7 @@ export const drawGeneStructure = (colorCustom, type) => {
                 e.end = parseInt(e.end)
             })
             let geneWidth = $(".node-table").width();
-            let geneHeight = Math.max($(".node-table").height(), 300);
+            let geneHeight = Math.max($(".node-table").height(), 430);
             let xGeneScale = d3.scaleLinear()
                 .domain(d3.extent([0, 29903]))
                 .range([0, geneWidth - 40])
@@ -44,16 +43,18 @@ export const drawGeneStructure = (colorCustom, type) => {
             let geneCanvas = svg.append('g')
                 .attr('transform', `translate(20, 10)`)
 
-            drawDotPlot(geneCanvas, geneWidth, altData, [0, 29903])
+            drawDotPlot('ntPlot', geneCanvas, geneWidth, altData, [0, 29903], 10)
+
+            drawDotPlot('aaPlot', geneCanvas, geneWidth, amioData, [0, 29903], 140)
 
             const xAxisCanvas = geneCanvas.append('g')
-                .attr('transform', `translate(0, 265)`);
+                .attr('transform', `translate(0, 395)`);
 
             let xAxisG = xAxisCanvas.append('g')
                 .call(xAxis)
 
             let geneStruCanvas = geneCanvas.append('g')
-                .attr('transform', `translate(0, 235)`);
+                .attr('transform', `translate(0, 365)`);
 
             geneStruCanvas.selectAll('rect').data(geneData)
                 .enter().append('rect')
@@ -63,7 +64,7 @@ export const drawGeneStructure = (colorCustom, type) => {
                 .attr('fill', (d, i) => d.color);
 
             let nspCanvas = geneCanvas.append('g')
-                .attr('transform', `translate(0, 170)`);
+                .attr('transform', `translate(0, 300)`);
 
             nspCanvas.selectAll('rect').data(nspData)
                 .enter().append('rect')
@@ -115,10 +116,10 @@ export const drawGeneStructure = (colorCustom, type) => {
                 .on("end", brushed);
 
             let largeCanvas = geneCanvas.append('g')
-                .attr('transform', `translate(0, 140)`);
+                .attr('transform', `translate(0, 270)`);
 
             geneCanvas.append("g")
-                .attr('transform', `translate(0, 180)`)
+                .attr('transform', `translate(0, 310)`)
                 .call(brush)
                 .call(brush.move, [1, 29903].map(xGeneScale));
 
@@ -184,7 +185,8 @@ export const drawGeneStructure = (colorCustom, type) => {
                     .attr('text-anchor', 'middle')
                     .attr("font-size", "10px")
 
-                drawDotPlot(geneCanvas, geneWidth, altData, sx)
+                drawDotPlot('ntPlot', geneCanvas, geneWidth, altData, sx, 10, "NT")
+                drawDotPlot('aaPlot', geneCanvas, geneWidth, amioData, sx, 140, "AA")
 
             }
 
@@ -196,12 +198,12 @@ export const drawGeneStructure = (colorCustom, type) => {
 
 }
 
-const drawDotPlot = (canvas, width, data, xrange) => {
+const drawDotPlot = (c, canvas, width, data, xrange, yT, t) => {
 
-    d3.select('.dotPlot').remove()
+    d3.select("." + c).remove()
     let dotCanvas = canvas.append("g")
-        .attr('class', 'dotPlot')
-        .attr('transform', `translate(0, 10)`);
+        .attr('class', c)
+        .attr('transform', `translate(0, ${yT})`);
 
     let xScale = d3.scaleLinear()
         .domain(xrange)
@@ -248,8 +250,8 @@ const drawDotPlot = (canvas, width, data, xrange) => {
         .attr("cursor", "pointer")
         .on("mouseover", (d) => {
             d3.select(".dotProp").remove()
-            let tx = Math.min(xScale(parseInt(d.pos)) + 2, width-100)
-            let ty = Math.min(yScale(d.freq)/2, 120)
+            let tx = Math.min(xScale(parseInt(d.pos)) + 2, width - 100)
+            let ty = Math.min(yScale(d.freq) / 2, 120)
 
             let propCanvas = dotCanvas.append('g')
                 .attr('class', 'dotProp')
@@ -275,5 +277,9 @@ const drawDotPlot = (canvas, width, data, xrange) => {
                 .attr('font-size', 10)
                 .attr('transform', `translate(5, 28)`)
         })
+
+    dotCanvas.append("text")
+        .text(t)
+        .attr('transform', `translate(10, 10)`)
 
 }
