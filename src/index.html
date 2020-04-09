@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:16
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-08 21:28:42
+ * @LastEditTime: 2020-04-09 17:39:26
  -->
 <link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.bootcss.com/bootstrap-table/1.16.0/bootstrap-table.min.css" rel="stylesheet">
@@ -120,16 +120,25 @@
 
     <div class="sidebar-panel">
 
-        
-  
+
+
         <div class="link-table">
             <!-- <h4 id="linkInfo"></h4> -->
             <div id="mapid"></div>
         </div>
 
-        
 
-        <div class="node-table">
+
+        <div class="node-table" style="position:relative">
+            <div style="position: absolute; right: 20px; top: 5px;">
+                <button id='nt' class="mini ui circular green icon button">
+                    NT
+                </button>
+                <button id='aa' class="mini ui circular teal icon button">
+                    AA
+                </button>
+            </div>
+
             <!-- <h3 id="linkInfo" hidden> </h3> -->
             <!-- <table id="linkTable" hidden> </table> -->
         </div>
@@ -147,14 +156,14 @@
                 <label for="speed">Speed</label>
                 <select class="form-control" id="speed">
                     <option value="10">10ms/day</option>
-                  <option value="50">50ms/day</option>
-                  <option value="100" selected>100ms/day</option>
-                  <option value="500">500ms/day</option>
-                  <option value="1000">1000ms/day</option>
+                    <option value="50">50ms/day</option>
+                    <option value="100" selected>100ms/day</option>
+                    <option value="500">500ms/day</option>
+                    <option value="1000">1000ms/day</option>
                 </select>
-              </div>
+            </div>
 
-              
+
             <i class="fas fa-question-circle" data-trigger="hover" data-container="body" data-toggle="popover"
                 data-placement="bottom"
                 data-content="Haplotype maps of novel coronavirus across the whole world and China are constructed, respectively, based on the genome variation information obtained from available high-quality genome sequences.">
@@ -239,8 +248,8 @@
 
         <div class="date-plot-panel">
             <!-- <div id="barPlotControl"> -->
-                <!-- <i class="fas fa-globe-americas" style="margin-bottom: 2px;"></i><br> -->
-                <!-- <i class="fas fa-calendar-alt"></i> -->
+            <!-- <i class="fas fa-globe-americas" style="margin-bottom: 2px;"></i><br> -->
+            <!-- <i class="fas fa-calendar-alt"></i> -->
             <!-- </div> -->
             <div id="datePlot"></div>
         </div>

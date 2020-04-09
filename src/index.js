@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:38
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-08 22:16:32
+ * @LastEditTime: 2020-04-09 17:40:53
  */
 import './css/index.css'
 import * as d3 from 'd3';
@@ -23,9 +23,10 @@ import { playStart } from './player';
 import { legendDataCountry } from './legend';
 import { setCountryCoord, drawMap, drawCircle } from './mapPlot';
 import { setSimulation } from './simulation';
+import { drawGeneStructure } from './geneSturcture';
 
 d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-01&area=china").then(graph => {
-
+    
     let uniqueCountry = getUniqueCountry(graph);
     let uniqueDate = getUniqueDate(graph)
     let uniqueVirus = getUniqueVirus(graph)
@@ -219,63 +220,14 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
     })
 
 
-    Promise
-        .all([
-            d3.tsv("https://bigd.big.ac.cn/ewas/haplotypetest/gene_structure.tsv"),
-            d3.tsv('https://bigd.big.ac.cn/ewas/haplotypetest/nsp.tsv')
-        ]).then(([geneData, nspData]) => {
-            let geneWidth = $(".node-table").width();
-            let geneHeight = $(".node-table").height();
-            let xGeneScale = d3.scaleLinear()
-                .domain(d3.extent([0, 29903]))
-                .range([0, geneWidth - 30])
-                .nice();
+    drawGeneStructure(colorCustom, 'https://bigd.big.ac.cn/ewas/haplotypetest/2019-nCoV_3437_altCoverage.tsv')
 
-            let xAxis = d3.axisBottom(xGeneScale)
-                .tickSize(10)
-                .tickPadding(3);
-
-            let geneCanvas = d3.select(".node-table").append("svg")
-                .attr("width", geneWidth)
-                .attr("height", geneHeight);
-
-            const xAxisCanvas = geneCanvas.append('g')
-                .attr('transform', `translate(10, ${geneHeight - 50})`);
-
-            let xAxisG = xAxisCanvas.append('g')
-                .call(xAxis)
-                .attr('transform', `translate(0,0)`);
-
-            let geneStruCanvas = geneCanvas.append('g')
-                .attr('transform', `translate(10, ${geneHeight - 80})`);
-
-            geneStruCanvas.selectAll('rect').data(geneData)
-                .enter().append('rect')
-                .attr('x', (d) => xGeneScale(d.start))
-                .attr('width', d => xGeneScale(d.end - d.start + 1))
-                .attr('height', 20)
-                .attr('fill', (d, i) => colorCustom[i]);
-
-            let nspCanvas = geneCanvas.append('g')
-                .attr('transform', `translate(10, ${geneHeight - 140})`);
-
-            nspCanvas.selectAll('rect').data(nspData)
-                .enter().append('rect')
-                .attr('x', (d) => xGeneScale(d.start))
-                .attr('width', d => xGeneScale(d.end - d.start + 1))
-                .attr('height', 20)
-                .attr("y", (d, i) => i % 2 == 0 ? 20 : 0)
-                .attr('fill', "gray");
-            
-            nspCanvas.selectAll('text').data(nspData)
-                .enter().append('text')
-                .attr('x', (d) => xGeneScale(d.start)+ xGeneScale(d.end - d.start + 1)/2-3)
-                .attr("y", (d, i) => i % 2 == 1 ? 48 : -3)
-                .text((d,i) => i+1)
-                .attr("font-size", "10px")
-
-        });
-
+    $('#aa').on('click', function() {
+        drawGeneStructure(colorCustom, 'https://bigd.big.ac.cn/ewas/haplotypetest/2019-nCoV_3437_amioCoverage.tsv')
+    })
+    $('#nt').on('click', function() {
+        drawGeneStructure(colorCustom, 'https://bigd.big.ac.cn/ewas/haplotypetest/2019-nCoV_3437_altCoverage.tsv')
+    })
 
 })
 
