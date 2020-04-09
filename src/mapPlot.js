@@ -3,8 +3,8 @@
  * @version: 
  * @Author: Anke Wang
  * @Date: 2020-04-04 15:31:42
- * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-08 16:42:24
+ * @LastEditors: Anke Wang
+ * @LastEditTime: 2020-04-09 17:59:59
  * 
  * Code reference:
  * Leaflet Map: https://leafletjs.com/
@@ -38,8 +38,8 @@ export const setCountryCoord = () => {
         { "name": "Pakistan", "lat": 30.375321, "lng": 69.345116, },
         { "name": "UnitedStates", "lat": 37.09024, "lng": 263.671875, },
         { "name": "Canada", "lat": 58.631217, "lng": 249.257813, },
-        { "name": "Brazil", "lat": -14.235004, "lng": -51.92528, },
-        { "name": "Mexico", "lat": 23.634501, "lng": -102.552784, },
+        { "name": "Brazil", "lat": -14.235004, "lng": 309.92528, },
+        { "name": "Mexico", "lat": 23.634501, "lng": 258.552784, },
         { "name": "Iceland", "lat": 64.963051, "lng": -19.020835, },
         { "name": "Switzerland", "lat": 46.818188, "lng": 8.227512, },
         { "name": "Netherlands", "lat": 52.132633, "lng": 5.291266, },
@@ -58,7 +58,7 @@ export const setCountryCoord = () => {
         { "name": "NewZealand", "lat": -40.900557, "lng": 174.885971, },
         { "name": "Kuwait", "lat": 29.31166, "lng": 47.481766, },
         { "name": "Slovakia", "lat": 48.669026, "lng": 19.699024, },
-        { "name": "Chile", "lat": -35.675147, "lng": -71.542969, },
+        { "name": "Chile", "lat": -35.675147, "lng": 289.542969, },
         { "name": "SaudiArabia", "lat": 23.885942, "lng": 45.079162, },
         { "name": "Hungary", "lat": 47.162494, "lng": 19.503304, },
         { "name": "CzechRepublic", "lat": 49.817492, "lng": 15.472962, },
@@ -75,9 +75,9 @@ export const setCountryCoord = () => {
         { "name": "SouthAfrica", "lat": -30.559482, "lng": 22.937506, },
         { "name": "India", "lat": 20.593684, "lng": 78.96288, },
         { "name": "Austria", "lat": 47.516231, "lng": 14.550072, },
-        { "name": "Alaska", "lat": 64.200844, "lng": -149.493668, },
+        { "name": "Alaska", "lat": 64.200844, "lng": 205.493668, },
         { "name": "Estonia", "lat": 58.595272, "lng": 25.013607, },
-        { "name": "Argentina", "lat": -38.416097, "lng": -63.616672, },
+        { "name": "Argentina", "lat": -38.416097, "lng": 297.616672, },
         { "name": "Israel", "lat": 31.046051, "lng": 34.851612, },
         { "name": "Slovenia", "lat": 46.151241, "lng": 14.995463, },
         { "name": "Greece", "lat": 39.074208, "lng": 21.824312, },
@@ -106,35 +106,40 @@ export const setCountryCoord = () => {
 
 export const drawMap = () => {
 
-    let mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        mbUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+    let bounds = new L.LatLngBounds(new L.LatLng(-85, -173), new L.LatLng(85, 450));
 
-    // gray basemap
-    let grayscale = L.tileLayer(mbUrl, { id: 'mapbox/light-v9', tileSize: 512, zoomOffset: -1, attribution: mbAttr }),
-        darkscale = L.tileLayer(mbUrl, { id: 'mapbox/dark-v10', tileSize: 512, zoomOffset: -1, attribution: mbAttr }),
-        outdoor = L.tileLayer(mbUrl, { id: 'mapbox/outdoors-v11', tileSize: 512, zoomOffset: -1, attribution: mbAttr }),
-        streets = L.tileLayer(mbUrl, { id: 'mapbox/streets-v11', tileSize: 512, zoomOffset: -1, attribution: mbAttr }),
-        satellitescale = L.tileLayer(mbUrl, { id: 'mapbox/satellite-v9', tileSize: 512, zoomOffset: -1, attribution: mbAttr });
+    let mbAttr = 'Map data &copy; <a href="www.tianditu.gov.cn">Map World</a> ';
 
     let mymap = L.map('mapid', {
-        center: [40, 170],
-        zoom: 2,
+        center: [40, 150],
+        zoom: 1,
         minZoom: 1,
         maxZoom: 10,
-        layers: grayscale
+        maxBounds: bounds,
+        maxBoundsViscosity: 1.0,
+        //  layers: grayscale
     });
 
     let baseLayers = {
-        "Gray": grayscale,
-        "Dark": darkscale,
-        "Light": outdoor,
-        "Streets": streets,
-        "Satellite": satellitescale,
+
+        "original": L.layerGroup([
+            L.tileLayer('http://t{s}.tianditu.gov.cn/vec_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=c044ae411c12b9585d2f114dd86b2f1f', { subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'] , attribution: mbAttr  }),
+            //  L.tileLayer('http://t{s}.tianditu.gov.cn/cva_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=c044ae411c12b9585d2f114dd86b2f1f', { subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'] }),
+            L.tileLayer('http://t{s}.tianditu.gov.cn/eva_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=eva&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=c044ae411c12b9585d2f114dd86b2f1f', { subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'] }),
+        ]).addTo(mymap),
+        "Satellite": L.layerGroup([
+            L.tileLayer('http://t{s}.tianditu.gov.cn/img_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=c044ae411c12b9585d2f114dd86b2f1f', { subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'] , attribution: mbAttr}),
+            L.tileLayer('http://t{s}.tianditu.gov.cn/eia_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=eia&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=c044ae411c12b9585d2f114dd86b2f1f', { subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'] }),
+        ]),
+        "Terrain": L.layerGroup([
+            L.tileLayer('http://t{s}.tianditu.gov.cn/ter_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ter&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=56b81006f361f6406d0e940d2f89a39c', { subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'] , attribution: mbAttr}),
+            L.tileLayer('http://t{s}.tianditu.gov.cn/eta_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=eta&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=56b81006f361f6406d0e940d2f89a39c', { subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'] })
+        ]),
+
     };
 
-    L.control.layers(baseLayers).addTo(mymap);
+
+    L.control.layers(baseLayers, {}, { position: "topright" }).addTo(mymap);
 
     // get location
     function onMapClick(e) {
@@ -172,7 +177,7 @@ export const drawCircle = (basemap, getLatlng, countryName, r, color, node, link
         .domain(d3.extent(r))
         .range([2, 200])
 
-        
+
     basemap.eachLayer(function (layer) {
         if (layer.id == 'mycircle')
             basemap.removeLayer(layer);
@@ -180,7 +185,7 @@ export const drawCircle = (basemap, getLatlng, countryName, r, color, node, link
 
 
     countryName.forEach(function (d, i) {
-        
+
         let lat = getLatlng[d][0];
         let lng = getLatlng[d][1];
 
