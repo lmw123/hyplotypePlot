@@ -4,7 +4,7 @@
  * @Author: Anke Wang
  * @Date: 2020-04-04 15:31:42
  * @LastEditors: Anke Wang
- * @LastEditTime: 2020-04-09 01:10:29
+ * @LastEditTime: 2020-04-09 13:57:18
  * 
  * Code reference:
  * Leaflet Map: https://leafletjs.com/
@@ -114,10 +114,10 @@ export const drawMap = () => {
     let bounds = new L.LatLngBounds(new L.LatLng(-85, -173), new L.LatLng(85, 450));
 
     // gray basemap
-    let grayscale = L.tileLayer(mbUrl, { id: 'mapbox/light-v9', tileSize: 512, zoomOffset: -1, attribution: mbAttr }),
-        darkscale = L.tileLayer(mbUrl, { id: 'mapbox/dark-v10', tileSize: 512, zoomOffset: -1, attribution: mbAttr }),
-        outdoor = L.tileLayer(mbUrl, { id: 'mapbox/outdoors-v11', tileSize: 512, zoomOffset: -1, attribution: mbAttr }),
-        streets = L.tileLayer(mbUrl, { id: 'mapbox/streets-v11', tileSize: 512, zoomOffset: -1, attribution: mbAttr }),
+    let //grayscale = L.tileLayer(mbUrl, { id: 'mapbox/light-v9', tileSize: 512, zoomOffset: -1, attribution: mbAttr }),
+       // darkscale = L.tileLayer(mbUrl, { id: 'mapbox/dark-v10', tileSize: 512, zoomOffset: -1, attribution: mbAttr }),
+       // outdoor = L.tileLayer(mbUrl, { id: 'mapbox/outdoors-v11', tileSize: 512, zoomOffset: -1, attribution: mbAttr }),
+       // streets = L.tileLayer(mbUrl, { id: 'mapbox/streets-v11', tileSize: 512, zoomOffset: -1, attribution: mbAttr }),
         satellitescale = L.tileLayer(mbUrl, { id: 'mapbox/satellite-v9', tileSize: 512, zoomOffset: -1, attribution: mbAttr });
 
     let mymap = L.map('mapid', {
@@ -127,14 +127,14 @@ export const drawMap = () => {
         maxZoom: 10,
         maxBounds: bounds,
         maxBoundsViscosity: 1.0,
-        layers: grayscale
+        layers: satellitescale
     });
 
     let baseLayers = {
-        "Gray": grayscale,
-        "Dark": darkscale,
-        "Light": outdoor,
-        "Streets": streets,
+       // "Gray": grayscale,
+     //   "Dark": darkscale,
+      //  "Light": outdoor,
+     //   "Streets": streets,
         "Satellite": satellitescale,
     };
 
