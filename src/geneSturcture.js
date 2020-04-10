@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-09 12:26:16
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-09 19:59:09
+ * @LastEditTime: 2020-04-10 21:02:04
  */
 
 import * as d3 from 'd3';
@@ -26,7 +26,7 @@ export const drawGeneStructure = (colorCustom, type) => {
                 e.end = parseInt(e.end)
             })
             let geneWidth = $(".node-table").width();
-            let geneHeight = Math.max($(".node-table").height(), 430);
+            let geneHeight = Math.max($(".node-table").height(), 300);
             let xGeneScale = d3.scaleLinear()
                 .domain(d3.extent([0, 29903]))
                 .range([0, geneWidth - 40])
@@ -45,16 +45,16 @@ export const drawGeneStructure = (colorCustom, type) => {
 
             drawDotPlot('ntPlot', geneCanvas, geneWidth, altData, [0, 29903], 10)
 
-            drawDotPlot('aaPlot', geneCanvas, geneWidth, amioData, [0, 29903], 140)
+            // drawDotPlot('aaPlot', geneCanvas, geneWidth, amioData, [0, 29903], 140)
 
             const xAxisCanvas = geneCanvas.append('g')
-                .attr('transform', `translate(0, 395)`);
+                .attr('transform', `translate(0, 265)`);
 
             let xAxisG = xAxisCanvas.append('g')
                 .call(xAxis)
 
             let geneStruCanvas = geneCanvas.append('g')
-                .attr('transform', `translate(0, 365)`);
+                .attr('transform', `translate(0, 235)`);
 
             geneStruCanvas.selectAll('rect').data(geneData)
                 .enter().append('rect')
@@ -64,7 +64,7 @@ export const drawGeneStructure = (colorCustom, type) => {
                 .attr('fill', (d, i) => d.color);
 
             let nspCanvas = geneCanvas.append('g')
-                .attr('transform', `translate(0, 300)`);
+                .attr('transform', `translate(0, 170)`);
 
             nspCanvas.selectAll('rect').data(nspData)
                 .enter().append('rect')
@@ -116,10 +116,10 @@ export const drawGeneStructure = (colorCustom, type) => {
                 .on("end", brushed);
 
             let largeCanvas = geneCanvas.append('g')
-                .attr('transform', `translate(0, 270)`);
+                .attr('transform', `translate(0, 140)`);
 
             geneCanvas.append("g")
-                .attr('transform', `translate(0, 310)`)
+                .attr('transform', `translate(0, 180)`)
                 .call(brush)
                 .call(brush.move, [1, 29903].map(xGeneScale));
 
@@ -186,7 +186,7 @@ export const drawGeneStructure = (colorCustom, type) => {
                     .attr("font-size", "10px")
 
                 drawDotPlot('ntPlot', geneCanvas, geneWidth, altData, sx, 10, "NT")
-                drawDotPlot('aaPlot', geneCanvas, geneWidth, amioData, sx, 140, "AA")
+                // drawDotPlot('aaPlot', geneCanvas, geneWidth, amioData, sx, 140, "AA")
 
             }
 
@@ -241,7 +241,7 @@ const drawDotPlot = (c, canvas, width, data, xrange, yT, t) => {
         .attr("stroke-width", 2)
         .attr("stroke", "red")
         .attr('x1', (d, i) => {
-            console.log(d.pos + ":" + xScale(parseInt(d.pos)))
+            // console.log(d.pos + ":" + xScale(parseInt(d.pos)))
             return xScale(parseInt(d.pos))
         })
         .attr('x2', (d, i) => xScale(parseInt(d.pos)))

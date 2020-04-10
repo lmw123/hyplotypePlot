@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:38
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-09 19:56:07
+ * @LastEditTime: 2020-04-10 20:57:44
  */
 import './css/index.css'
 import * as d3 from 'd3';
@@ -24,9 +24,10 @@ import { playStart } from './player';
 import { setCountryCoord, drawMap, drawCircle } from './mapPlot';
 import { setSimulation } from './simulation';
 import { drawGeneStructure } from './geneSturcture';
+import { saveSvgAsPng } from 'save-svg-as-png';
 
 d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-01&area=world").then(graph => {
-    
+
     let uniqueCountry = getUniqueCountry(graph);
     let uniqueDate = getUniqueDate(graph)
     let uniqueVirus = getUniqueVirus(graph)
@@ -42,6 +43,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
     let height = $('.network-panel').height();
 
     let svg = d3.select("#plot").append("svg")
+        .attr("id", "svg")
         .attr("width", width)
         .attr("height", height);
 
@@ -204,7 +206,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
     var map = drawMap();
     var getLatlng = setCountryCoord();
 
-    drawCircle(map, getLatlng, uniqueCountry.map(e => e.name), uniqueCountry.map(e => e.count), uniqueCountry.map(e => e.color),  node, link, chart, uniqueVirus, graph)
+    drawCircle(map, getLatlng, uniqueCountry.map(e => e.name), uniqueCountry.map(e => e.count), uniqueCountry.map(e => e.color), node, link, chart, uniqueVirus, graph)
 
     $(".fa-play-circle").on("click", () => {
         playStart($(".fa-play-circle"), uniqueDate, graph, node, link, chart,
@@ -222,8 +224,29 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
 
     drawGeneStructure(colorCustom)
 
+    $("#exportSvg").on("click", function () {
+        saveSvg(document.getElementById("svg"), "haplotype_ncov2019_from_NGDC.svg")
+    })
+
+    $("#exportPng").on("click", function () {
+        saveSvgAsPng(document.getElementById("svg"), "haplotype_ncov2019_from_NGDC.png");
+    })
+    function saveSvg(svgEl, name) {
+        svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+        var svgData = svgEl.outerHTML;
+        var preface = '<?xml version="1.0" standalone="no"?>\r\n';
+        var svgBlob = new Blob([preface, svgData], { type: "image/svg+xml;charset=utf-8" });
+        var svgUrl = URL.createObjectURL(svgBlob);
+        var downloadLink = document.createElement("a");
+        downloadLink.href = svgUrl;
+        downloadLink.download = name;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
 
 })
+
 
 
 

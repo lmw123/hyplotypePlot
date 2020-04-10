@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-04 11:20:38
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-08 16:33:34
+ * @LastEditTime: 2020-04-10 20:48:22
  */
 
 import * as echarts from 'echarts';
@@ -158,7 +158,7 @@ export const drawHeatmapDate = (data) => {
         tooltip: {
             formatter: function (params, ticket, callback) {
                 return "<strong>"+params.value[0]+"</strong><br>Isolates: " + params.value[1]
-                console.log(params)
+                // console.log(params)
             }
         },
         visualMap: {

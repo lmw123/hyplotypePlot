@@ -22,8 +22,10 @@
     "bootstrap-table": "^1.16.0",
     "d3": "^5.15.1",
     "echarts": "^4.7.0",
+    "file-saver": "^2.0.2",
     "highcharts": "^8.0.4",
     "jquery": "^3.4.1",
+    "save-svg-as-png": "^1.4.17",
     "select2": "^4.0.13"
   },
   "devDependencies": {

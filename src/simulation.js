@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-07 18:08:20
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-07 18:23:30
+ * @LastEditTime: 2020-04-10 21:05:28
  */
 
 import { forceSimulation, forceLink, forceManyBody, forceCenter, forceX, forceY } from "d3";
@@ -21,6 +21,7 @@ export const setSimulation = (lineScale, nodeScale, width, height) => {
         .force("center", forceCenter(width / 2, height / 2))
         .force('x', forceX().strength(0.01))
         .force('y', forceY().strength(0.01 * height / width))
+        .velocityDecay(0.2)
     
     return simulation;
 }
