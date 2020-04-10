@@ -3,8 +3,8 @@
  * @version: 
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:16
- * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-09 19:57:15
+ * @LastEditors: Anke Wang
+ * @LastEditTime: 2020-04-10 21:41:45
  -->
 <link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
 <!-- <link href="https://cdn.bootcss.com/bootstrap-table/1.16.0/bootstrap-table.min.css" rel="stylesheet"> -->
@@ -168,7 +168,7 @@
 
             <div class="dropdown">
                 <i class="fas fa-sliders-h" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <form class="dropdown-menu p-4" style="width: 400px;">
+                    <form class="dropdown-menu p-4" style="width: 450px;">
                         <div class="form-group">
                             <label>Branch Scale:&nbsp;</label>
                             <div class="form-check form-check-inline">
@@ -205,6 +205,14 @@
                             <b>1&nbsp;&nbsp;</b>
                             <input id="nodeSize" type="text" data-stopPropagation="true" />
                             <b>50</b>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="chargeSize">Charge:&nbsp;&nbsp;&nbsp;</label>
+                            <input type="number" min="-100" max="0" id="setCharge">
+                            <b>-100&nbsp;&nbsp;</b>
+                            <input id="chargeSize" type="text" data-stopPropagation="true" />
+                            <b>0</b>
                         </div>
 
                     </form>

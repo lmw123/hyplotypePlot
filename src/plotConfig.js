@@ -3,8 +3,8 @@
  * @version: 
  * @Author: Mengwei Li
  * @Date: 2020-04-03 10:21:12
- * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-08 09:50:24
+ * @LastEditors: Anke Wang
+ * @LastEditTime: 2020-04-10 22:00:15
  */
 
 import { drawBarPlot, drawHeatmapDate } from "./datePlot";
@@ -17,6 +17,8 @@ export const defaultColor = ["#c23531", "#2f4554", "#61a0a8", "#d48265", "#91c7a
 
 export const nodeRange = [1, 15]
 export const linkRange = [5, 300]
+export const chargeRange = -10
+
 
 export const defaultBehaviors = (uniqueCountry, uniqueDate, graph) => {
     
@@ -39,6 +41,13 @@ export const defaultBehaviors = (uniqueCountry, uniqueDate, graph) => {
         max: 50,
         value: nodeRange,
     });
+    
+    let c = $("#chargeSize").slider({
+        min: -100,
+        max: 0,
+        value: chargeRange,
+    });
+
 
     $("#searchBar").select2({
         minimumInputLength: 1,
