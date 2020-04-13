@@ -3,8 +3,8 @@
  * @version: 
  * @Author: Anke Wang
  * @Date: 2020-04-04 15:31:42
- * @LastEditors: Anke Wang
- * @LastEditTime: 2020-04-09 17:59:59
+ * @LastEditors: Mengwei Li
+ * @LastEditTime: 2020-04-11 13:48:12
  * 
  * Code reference:
  * Leaflet Map: https://leafletjs.com/
@@ -83,6 +83,7 @@ export const setCountryCoord = () => {
         { "name": "Greece", "lat": 39.074208, "lng": 21.824312, },
         { "name": "Belarus", "lat": 53.709807, "lng": 27.953389, },
         { "name": "Latvia", "lat": 56.879635, "lng": 24.603189, },
+        { "name": "Iran", "lat": 32.4279, "lng": 53.6880, }
     ];
 
     let getLatlng = {}
@@ -185,7 +186,8 @@ export const drawCircle = (basemap, getLatlng, countryName, r, color, node, link
 
 
     countryName.forEach(function (d, i) {
-
+        console.log("aaa")
+        console.log(d)
         let lat = getLatlng[d][0];
         let lng = getLatlng[d][1];
 
