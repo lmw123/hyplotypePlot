@@ -134,3 +134,27 @@ body {
 }
 
 #mapid { height: 100%; width: 100%;}
+
+#question2 {
+    line-height: 12px;
+    width: 18px;
+    font-size: 12pt;
+    font-family: tahoma;
+    margin-top: 0px;
+    margin-right: 30px;
+    position:absolute;
+    top:0;
+    right:30;
+}
+
+.fa-info-circle {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 20px;
+}
+
+.tooltip-inner {
+    max-width: 400px;
+    width: 400px; 
+}
