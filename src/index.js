@@ -3,8 +3,8 @@
  * @version: 
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:38
- * @LastEditors: Anke Wang
- * @LastEditTime: 2020-04-13 17:11:01
+ * @LastEditors: Mengwei Li
+ * @LastEditTime: 2020-04-14 11:09:06
  */
 import './css/index.css'
 import * as d3 from 'd3';
@@ -12,15 +12,12 @@ import { getUniqueCountry, getUniqueDate, getUniqueVirus } from './dataProcess';
 import { buildNode } from './buildNode';
 import { nodeLink, setScale } from './nodeLink';
 import { defaultColor, defaultBehaviors, linkRange, nodeRange, chargeRange } from './plotConfig';
-// import { refreshNodeTable, updateNodeTable, updateNodeTableByVirus } from './nodeTable';
 import { globalSearch } from './search';
 import { nodeHighlight, linkHighlight } from './partsHighlight';
 import 'bootstrap';
-// import 'bootstrap-table';
 import 'select2';
 import { drawBarPlot, drawHeatmapDate } from './datePlot';
 import { playStart } from './player';
-// import { legendDataCountry } from './legend';
 import { setCountryCoord, drawMap, drawCircle } from './mapPlot';
 import { setSimulation } from './simulation';
 import { drawGeneStructure } from './geneSturcture';
@@ -156,9 +153,6 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
         d.fy = null;
     }
 
-    // refreshNodeTable(graph.nodes)
-
-
     defaultBehaviors(uniqueCountry, uniqueDate, graph)
 
     $('#searchBar').on('select2:select', function (e) {
@@ -167,7 +161,11 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
 
     let chart = drawHeatmapDate(uniqueDate)
 
-    // legendDataCountry(graph, uniqueCountry, colorCustom, globalSearch, nodeHighlight, node, link, chart, uniqueVirus);
+    var map = drawMap();
+    var getLatlng = setCountryCoord();
+
+    drawCircle(map, getLatlng, uniqueCountry.map(e => e.name), uniqueCountry.map(e => e.count), uniqueCountry.map(e => e.color), node, link, chart, uniqueVirus, graph)
+
     chart.on('mouseover', function (params) {
         chart.dispatchAction({
             type: 'restore'
@@ -180,8 +178,16 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
         let res = globalSearch(params.value[0] + "|date", graph)
         nodeHighlight(node, link, res, 0.2);
         let a = uniqueVirus.filter(e => e.date === params.value[0])
-        // updateNodeTableByVirus(a)
-        // updateNodeTable(graph.nodes.filter(e => res.indexOf(e.id) >= 0))
+
+        let lociCount = a.map(e => e.loci.split("-")[0]).reduce(function (allNames, name) { if (name in allNames) { allNames[name]++; } else { allNames[name] = 1; } return allNames; }, {});
+
+        let colorMap = {}
+        
+        uniqueCountry.forEach(e => {
+            colorMap[e.name] = e.color
+        })
+        
+        drawCircle(map, getLatlng, Object.keys(lociCount), Object.values(lociCount), Object.keys(lociCount).map(e => colorMap[e]), node, link, chart, uniqueVirus, graph)
     });
 
     chart.on('mouseout', function (params) {
@@ -202,14 +208,6 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
         })
     })
 
-    // $(".fa-globe-americas").on("click", () => drawBarPlot(uniqueCountry))
-    // $(".fa-calendar-alt").on("click", () => drawHeatmapDate(uniqueDate))
-
-
-    var map = drawMap();
-    var getLatlng = setCountryCoord();
-
-    drawCircle(map, getLatlng, uniqueCountry.map(e => e.name), uniqueCountry.map(e => e.count), uniqueCountry.map(e => e.color), node, link, chart, uniqueVirus, graph)
 
     $(".fa-play-circle").on("click", () => {
         playStart($(".fa-play-circle"), uniqueDate, graph, node, link, chart,

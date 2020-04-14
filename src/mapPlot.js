@@ -4,7 +4,7 @@
  * @Author: Anke Wang
  * @Date: 2020-04-04 15:31:42
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-11 13:48:12
+ * @LastEditTime: 2020-04-14 10:58:18
  * 
  * Code reference:
  * Leaflet Map: https://leafletjs.com/
@@ -172,8 +172,7 @@ export const drawMap = () => {
  */
 
 export const drawCircle = (basemap, getLatlng, countryName, r, color, node, link, chart, uniqueVirus, graph) => {
-
-
+    
     let mapNodeScale = d3.scaleSqrt()
         .domain(d3.extent(r))
         .range([2, 200])
@@ -186,8 +185,7 @@ export const drawCircle = (basemap, getLatlng, countryName, r, color, node, link
 
 
     countryName.forEach(function (d, i) {
-        console.log("aaa")
-        console.log(d)
+
         let lat = getLatlng[d][0];
         let lng = getLatlng[d][1];
 
@@ -200,8 +198,6 @@ export const drawCircle = (basemap, getLatlng, countryName, r, color, node, link
             let res = globalSearch(d + "|country", graph)
             nodeHighlight(node, link, res, 0.2)
             let filterNodes = graph.nodes.filter(e => res.indexOf(e.id) >= 0)
-            let a = uniqueVirus.filter(e => e.loci.split("-")[0] === d)
-            // updateNodeTableByVirus(a)
 
             chart.dispatchAction({
                 type: 'restore'

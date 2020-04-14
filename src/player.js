@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-05 12:15:28
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-08 17:39:15
+ * @LastEditTime: 2020-04-14 11:06:46
  */
 
 import { globalSearch } from './search';
@@ -29,17 +29,21 @@ export const playStart = (bu, uniqueDate, graph, node, link, chart,
     let player = setInterval(() => {
 
         a = a.concat(globalSearch(uniqueDate[i].name + "|date", graph))
+        
         a = Array.from(new Set(a))
 
-        let b = uniqueVirus.filter(e => (new Date(e.date)) <= (new Date(uniqueDate[i].name)))
+        let b = uniqueVirus.filter(e => e.date.length === 10).filter(e => (new Date(e.date)) <= (new Date(uniqueDate[i].name)))
+
         let lociCount = b.map(e => e.loci.split("-")[0]).reduce(function (allNames, name) { if (name in allNames) { allNames[name]++; } else { allNames[name] = 1; } return allNames; }, {});
 
         let colorMap = {}
+        
         uniqueCountry.forEach(e => {
             colorMap[e.name] = e.color
         })
-        
+
         drawCircle(map, getLatlng, Object.keys(lociCount), Object.values(lociCount), Object.keys(lociCount).map(e => colorMap[e]), globalSearch, nodeHighlight, node, link, chart, uniqueVirus, graph)
+        
         nodeHighlight(node, link, a, 0.2);
 
         chart.dispatchAction({
