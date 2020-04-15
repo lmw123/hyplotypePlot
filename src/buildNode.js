@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 14:18:49
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-08 10:14:03
+ * @LastEditTime: 2020-04-15 10:55:46
  */
 import * as d3 from 'd3';
 
@@ -40,7 +40,7 @@ const drawPieChart = (nodeElement, radius, percentages, uniqueCountry) => {
             }))
             .attr('fill', pieColor)
             .attr("stroke", pieColor)
-            .attr("class", percentages[p].color)
+            // .attr("class", percentages[p].color)
             .on("mouseleave", d => {
                 d3.select("#test").remove()
                 d3.selectAll("." + percentages[p].color)

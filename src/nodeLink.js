@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 14:46:45
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-09 17:53:33
+ * @LastEditTime: 2020-04-15 11:10:15
  */
 
 import * as d3 from 'd3';
@@ -60,9 +60,9 @@ export const nodeLink = (graph, plotCanvas) => {
         .append("g")
         .attr("radius", d => d.radius)
 
-    link.on("click", d => { linkHighlight(node, link, d, 0.2) })
-
-
-
+    link.on("click", d => { 
+        linkHighlight(node, link, d, 0.2) 
+    })
+    
     return { node, link }
 }

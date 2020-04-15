@@ -4,45 +4,12 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-04 11:20:38
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-14 10:52:04
+ * @LastEditTime: 2020-04-15 10:38:18
  */
 
-import * as echarts from 'echarts';
-import { dateFormat } from 'highcharts';
+// import * as echarts from 'echarts';
 import { getUniqueVirus } from './dataProcess'
 
-var cellSize = [80, 80];
-var pieRadius = ($(".date-plot-panel").height() - 20) / 14 - 3;
-
-function getPieSeries(scatterData, chart) {
-    return echarts.util.map(scatterData, function (item, index) {
-        var center = chart.convertToPixel('calendar', item);
-        return {
-            id: index + 'pie',
-            type: 'pie',
-            center: center,
-            label: {
-                show: false
-            },
-            radius: pieRadius,
-            data: [
-                { name: '工作', value: Math.round(Math.random() * 24) },
-                { name: '娱乐', value: Math.round(Math.random() * 24) },
-                { name: '睡觉', value: Math.round(Math.random() * 24) }
-            ]
-        };
-    });
-}
-
-function getPieSeriesUpdate(scatterData, chart) {
-    return echarts.util.map(scatterData, function (item, index) {
-        var center = chart.convertToPixel('calendar', item);
-        return {
-            id: index + 'pie',
-            center: center
-        };
-    });
-}
 
 export const drawHeatmapDate = (data) => {
 

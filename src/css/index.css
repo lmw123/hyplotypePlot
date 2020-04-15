@@ -67,24 +67,17 @@ body {
     position: absolute;
     top: 20px;
     left: 20px;
-    font-size: 30px;
 }
 
 .global-search {
     position: absolute;
-    top: 20px;
-    left: 60px;
+    top: 15px;
+    left: 45px;
 }
 
-.fa-search {
-    font-size: 15px;
-    padding: 7 5 3 5;
-    border: 1px solid gray;
-    border-radius: 5px 0px 0px 5px;
-}
 
 #searchBar {
-    width: 300px;
+    width: 200px;
     height: 25px;
 }
 
@@ -92,7 +85,6 @@ body {
     position: absolute;
     top: 20px;
     right: 20px;
-    font-size: 25;
 }
 
 .zoom {
@@ -118,7 +110,6 @@ body {
     position: absolute;
     bottom: 20px;
     left: 20px;
-    font-size: 30;
 }
 
 #datePlot {
@@ -151,10 +142,20 @@ body {
     position: absolute;
     top: 20px;
     left: 20px;
-    font-size: 20px;
 }
 
 .tooltip-inner {
     max-width: 400px;
     width: 400px; 
+}
+
+.fas {
+    font-size: 20px;
+}
+
+.fa-search {
+    font-size: 10px;
+    padding: 7 5 3 5;
+    border: 1px solid gray;
+    border-radius: 5px 0px 0px 5px;
 }

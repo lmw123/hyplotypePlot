@@ -1,7 +1,17 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: Mengwei Li
+ * @Date: 2020-04-02 09:47:39
+ * @LastEditors: Mengwei Li
+ * @LastEditTime: 2020-04-15 11:32:22
+ */
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const webpack = require('webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
     mode: "none",
@@ -16,9 +26,18 @@ module.exports = {
         path: path.resolve(__dirname, "dist")
     },
     plugins: [
+        // new UglifyJsPlugin(),
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            template: "./src/index.html"
+            template: "./src/index.html",
+            minify: {
+                minimize: true,
+                removeConments: true,
+                collapseWhitespace: true,
+                minifyCSS: true,
+                minifyJS: true,
+
+            }
         }),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.ProvidePlugin({
@@ -26,7 +45,8 @@ module.exports = {
             jQuery: "jquery",
             'window.jQuery': 'jquery',
             Popper: ['popper.js', 'default'],
-        })
+        }),
+        new BundleAnalyzerPlugin()
     ],
     module: {
         rules: [

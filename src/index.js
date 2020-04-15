@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:38
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-14 11:09:06
+ * @LastEditTime: 2020-04-15 11:13:11
  */
 import './css/index.css'
 import * as d3 from 'd3';
@@ -196,16 +196,31 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
     });
 
     node.on("click", d => {
-        // updateNodeTable([d])
+
         nodeHighlight(node, link, d.id, 0.2)
+        
         chart.dispatchAction({
             type: 'restore'
         })
+
         chart.dispatchAction({
             type: 'highlight',
             seriesIndex: 0,
             name: d.Virus.map(e => e.date)
         })
+
+
+        let lociCount = d.Virus.map(e => e.loci.split("-")[0]).reduce(function (allNames, name) { if (name in allNames) { allNames[name]++; } else { allNames[name] = 1; } return allNames; }, {});
+
+        let colorMap = {}
+        
+        uniqueCountry.forEach(e => {
+            colorMap[e.name] = e.color
+        })
+        
+        drawCircle(map, getLatlng, Object.keys(lociCount), Object.values(lociCount), Object.keys(lociCount).map(e => colorMap[e]), node, link, chart, uniqueVirus, graph)
+
+
     })
 
 
