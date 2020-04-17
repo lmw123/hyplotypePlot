@@ -3,8 +3,8 @@
  * @version: 
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:16
- * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-15 11:17:43
+ * @LastEditors: Anke Wang
+ * @LastEditTime: 2020-04-17 09:38:11
  -->
 
 <title>Viral Genotyping Map - 2019 Novel Coronavirus Resource</title>
@@ -27,6 +27,9 @@
     crossorigin=""></script>
 <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 
+<!-- gridstack.js -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@1.1.1/dist/gridstack.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/gridstack@1.1.1/dist/gridstack.all.js"></script>
 
 <!-- <script src="https://bigd.big.ac.cn:443/ncov/static/js/jquery-1.11.3.min.js"></script> -->
 <!-- <script src="https://bigd.big.ac.cn:443/ncov/static/sui/semantic.min.js"></script> -->
@@ -115,153 +118,152 @@
         height: 0px;
     }
 </style>
+
+
 <div class="main-container" style="padding-top: 46.234px;">
 
-    <div class="sidebar-panel">
+    <div class="grid-stack">
 
 
 
-        <div class="link-table">
+        <div class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="5" data-gs-height="5">
             <!-- <h4 id="linkInfo"></h4> -->
-            <div id="mapid"></div>
+            <div class="grid-stack-item-content" id="mapid"></div>
         </div>
 
-
-
-        <div class="node-table" style="position:relative">
-
+        <div class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="5" data-gs-height="5">
+            <div class="grid-stack-item-content" id="genePlot"></div>
         </div>
 
+        <div class="grid-stack-item" data-gs-x="5" data-gs-y="0" data-gs-width="6" data-gs-height="10">
+            <div class="grid-stack-item-content">
+
+                <div class="network-panel">
 
 
-    </div>
-
-    <div class="plot-panel">
-
-        <div class="network-panel">
-
-
-            <div class="form-group" style="position: absolute; bottom: 2px; left: 80px;">
-                <label for="speed">Speed</label>
-                <select class="form-control" id="speed">
-                    <option value="10">10ms/day</option>
-                    <option value="50">50ms/day</option>
-                    <option value="100" selected>100ms/day</option>
-                    <option value="500">500ms/day</option>
-                    <option value="1000">1000ms/day</option>
-                </select>
-            </div>
-
-
-            <i class="fas fa-question-circle" data-trigger="hover" data-container="body" data-toggle="popover"
-                data-placement="bottom"
-                data-content="Haplotype maps of novel coronavirus across the whole world and China are constructed, respectively, based on the genome variation information obtained from available high-quality genome sequences.">
-            </i>
-
-            <div class="input-group input-group-sm global-search">
-                <i class="fas fa-search"></i>
-                <select data-stopPropagation="true" class="term" name="term" id="searchBar">
-                    <option value=""></option>
-                </select>
-            </div>
-
-
-            <div class="dropdown" style="position: absolute; top: 20px; right: 60px;">
-                <i class="fas fa-download" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
-                </i>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" id='exportPng'>PNG</a>
-                    <a class="dropdown-item" id="exportSvg">SVG</a>
+                    <div class="form-group" style="position: absolute; bottom: 2px; left: 80px;">
+                        <label for="speed">Speed</label>
+                        <select class="form-control" id="speed">
+                            <option value="10">10ms/day</option>
+                            <option value="50">50ms/day</option>
+                            <option value="100" selected>100ms/day</option>
+                            <option value="500">500ms/day</option>
+                            <option value="1000">1000ms/day</option>
+                        </select>
+                    </div>
+        
+        
+                    <i class="fas fa-question-circle" data-trigger="hover" data-container="body" data-toggle="popover"
+                        data-placement="bottom"
+                        data-content="Haplotype maps of novel coronavirus across the whole world and China are constructed, respectively, based on the genome variation information obtained from available high-quality genome sequences.">
+                    </i>
+        
+                    <div class="input-group input-group-sm global-search">
+                        <i class="fas fa-search"></i>
+                        <select data-stopPropagation="true" class="term" name="term" id="searchBar">
+                            <option value=""></option>
+                        </select>
+                    </div>
+        
+        
+                    <div class="dropdown" style="position: absolute; top: 20px; right: 60px;">
+                        <i class="fas fa-download" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        
+                        </i>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" id='exportPng'>PNG</a>
+                            <a class="dropdown-item" id="exportSvg">SVG</a>
+                        </div>
+                    </div>
+        
+                    <div class="dropdown">
+                        <i class="fas fa-sliders-h" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <form class="dropdown-menu p-4" style="width: 450px;">
+                                <div class="form-group">
+                                    <label>Branch Scale:&nbsp;</label>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="linkScaleType" value="sqrt" checked>
+                                        <label class="form-check-label">Sqrt</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="linkScaleType" value="linear">
+                                        <label class="form-check-label">Linear</label>
+                                    </div>
+                                    <div id="question2">
+                                        <i class="fas fa-info-circle" data-toggle="tooltip"></i>
+                                    </div>
+                                </div>
+        
+                                <div class="form-group">
+                                    <label for="linkSize">Branch Size:&nbsp;&nbsp;</label>
+                                    <b>1&nbsp;&nbsp;</b>
+                                    <input id="linkSize" type="text" data-stopPropagation="true" />
+                                    <b>500</b>
+                                </div>
+        
+                                <div class="form-group">
+                                    <label>Node Scale:&nbsp;&nbsp;&nbsp;</label>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="nodeScaleType" value="sqrt" checked>
+                                        <label class="form-check-label">Sqrt</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="nodeScaleType" value="linear">
+                                        <label class="form-check-label">Linear</label>
+                                    </div>
+                                </div>
+        
+                                <div class="form-group">
+                                    <label for="nodeSize">Node Size:&nbsp;&nbsp;&nbsp;</label>
+                                    <b>1&nbsp;&nbsp;</b>
+                                    <input id="nodeSize" type="text" data-stopPropagation="true" />
+                                    <b>50</b>
+                                </div>
+        
+                                <div class="form-group">
+                                    <label for="chargeSize">Charge:&nbsp;&nbsp;&nbsp;</label>
+        
+                                    <b>-100&nbsp;&nbsp;</b>
+                                    <input id="chargeSize" type="text" data-stopPropagation="true" />
+                                    <b>0</b>
+        
+                                </div>
+        
+                            </form>
+                        </i>
+                    </div>
+        
+                    <div class="zoom">
+                        <a id="zoomIn">
+                            <i class="fas fa-search-plus"></i>
+                        </a>
+                        <hr>
+                        <a id="zoomReset">
+                            <i class="fas fa-expand"></i>
+                        </a>
+                        <hr>
+                        <a id="zoomOut">
+                            <i class="fas fa-search-minus"></i>
+                        </a>
+                    </div>
+        
+                    <div class="playDate">
+                        <input id="playIndex" value="0" hidden>
+                        <input id="playContent" value="" hidden>
+                        <i class="fas fa-play-circle" data-status="start" data-index=0 data-tmp=""></i>
+                        <i class="fas fa-pause-circle" style="display: none;"></i>
+                        <i class="fas fa-redo"></i>
+                    </div>
+        
+                    <div id="plot"></div>
                 </div>
+        
+                <div class="date-plot-panel">
+                    <div id="datePlot"></div>
+                </div>
+
             </div>
-
-            <div class="dropdown">
-                <i class="fas fa-sliders-h" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <form class="dropdown-menu p-4" style="width: 450px;">
-                        <div class="form-group">
-                            <label>Branch Scale:&nbsp;</label>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="linkScaleType" value="sqrt" checked>
-                                <label class="form-check-label">Sqrt</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="linkScaleType" value="linear">
-                                <label class="form-check-label">Linear</label>
-                            </div>
-                            <div id="question2">
-                                <i class="fas fa-info-circle" data-toggle="tooltip"></i>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="linkSize">Branch Size:&nbsp;&nbsp;</label>
-                            <b>1&nbsp;&nbsp;</b>
-                            <input id="linkSize" type="text" data-stopPropagation="true" />
-                            <b>500</b>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Node Scale:&nbsp;&nbsp;&nbsp;</label>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="nodeScaleType" value="sqrt" checked>
-                                <label class="form-check-label">Sqrt</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="nodeScaleType" value="linear">
-                                <label class="form-check-label">Linear</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="nodeSize">Node Size:&nbsp;&nbsp;&nbsp;</label>
-                            <b>1&nbsp;&nbsp;</b>
-                            <input id="nodeSize" type="text" data-stopPropagation="true" />
-                            <b>50</b>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="chargeSize">Charge:&nbsp;&nbsp;&nbsp;</label>
-
-                            <b>-100&nbsp;&nbsp;</b>
-                            <input id="chargeSize" type="text" data-stopPropagation="true" />
-                            <b>0</b>
-
-                        </div>
-
-                    </form>
-                </i>
-            </div>
-
-            <div class="zoom">
-                <a id="zoomIn">
-                    <i class="fas fa-search-plus"></i>
-                </a>
-                <hr>
-                <a id="zoomReset">
-                    <i class="fas fa-expand"></i>
-                </a>
-                <hr>
-                <a id="zoomOut">
-                    <i class="fas fa-search-minus"></i>
-                </a>
-            </div>
-
-            <div class="playDate">
-                <input id="playIndex" value="0" hidden>
-                <input id="playContent" value="" hidden>
-                <i class="fas fa-play-circle" data-status="start" data-index=0 data-tmp=""></i>
-                <i class="fas fa-pause-circle" style="display: none;"></i>
-                <i class="fas fa-redo"></i>
-            </div>
-
-            <div id="plot"></div>
         </div>
-
-        <div class="date-plot-panel">
-            <div id="datePlot"></div>
-        </div>
-    </div>
 
 </div>
 
