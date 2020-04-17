@@ -3,15 +3,15 @@
  * @version: 
  * @Author: Mengwei Li
  * @Date: 2020-04-09 12:26:16
- * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-10 21:02:04
+ * @LastEditors: Anke Wang
+ * @LastEditTime: 2020-04-17 07:40:42
  */
 
 import * as d3 from 'd3';
 
 
 export const drawGeneStructure = (colorCustom, type) => {
-    d3.select(".node-table").select("svg").remove()
+    d3.select("#genePlot").select("svg").remove()
     Promise
         .all([
             d3.tsv("https://bigd.big.ac.cn/ewas/haplotypetest/gene_structure.tsv"),
@@ -25,8 +25,8 @@ export const drawGeneStructure = (colorCustom, type) => {
                 e.start = parseInt(e.start)
                 e.end = parseInt(e.end)
             })
-            let geneWidth = $(".node-table").width();
-            let geneHeight = Math.max($(".node-table").height(), 300);
+            let geneWidth = $("#genePlot").width();
+            let geneHeight = Math.max($("#genePlot").height(), 300);
             let xGeneScale = d3.scaleLinear()
                 .domain(d3.extent([0, 29903]))
                 .range([0, geneWidth - 40])
@@ -36,7 +36,7 @@ export const drawGeneStructure = (colorCustom, type) => {
                 .tickSize(10)
                 .tickPadding(3);
 
-            let svg = d3.select(".node-table").append("svg")
+            let svg = d3.select("#genePlot").append("svg")
                 .attr("width", geneWidth)
                 .attr("height", geneHeight)
 

@@ -3,8 +3,8 @@
  * @version: 
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:38
- * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-15 11:13:11
+ * @LastEditors: Anke Wang
+ * @LastEditTime: 2020-04-17 08:42:05
  */
 import './css/index.css'
 import * as d3 from 'd3';
@@ -25,6 +25,13 @@ import { saveSvgAsPng } from 'save-svg-as-png';
 
 d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-06&area=world").then(graph => {
 
+
+    let options = { // put in gridstack options here
+      //  disableOneColumnMode: true, // for jfiddle small window size
+        float: false
+      };
+    let grid = GridStack.init(options);
+    
     let uniqueCountry = getUniqueCountry(graph);
     let uniqueDate = getUniqueDate(graph)
     let uniqueVirus = getUniqueVirus(graph)
@@ -43,7 +50,10 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
     let svg = d3.select("#plot").append("svg")
         .attr("id", "svg")
         .attr("width", width)
-        .attr("height", height);
+        .attr("height", height)
+        .call(d3.zoom().on("zoom", zoomed))
+        .on("wheel.zoom", null)
+        .on("dblclick.zoom", null);
 
     function zoomed() {
         plotCanvas.attr("transform", d3.event.transform);
