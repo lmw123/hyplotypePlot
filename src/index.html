@@ -3,8 +3,8 @@
  * @version: 
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:16
- * @LastEditors: Anke Wang
- * @LastEditTime: 2020-04-17 09:38:11
+ * @LastEditors: Mengwei Li
+ * @LastEditTime: 2020-04-17 15:19:04
  -->
 
 <title>Viral Genotyping Map - 2019 Novel Coronavirus Resource</title>
@@ -29,7 +29,7 @@
 
 <!-- gridstack.js -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@1.1.1/dist/gridstack.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/gridstack@1.1.1/dist/gridstack.all.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/gridstack@1.1.1/dist/gridstack.all.js"></script> -->
 
 <!-- <script src="https://bigd.big.ac.cn:443/ncov/static/js/jquery-1.11.3.min.js"></script> -->
 <!-- <script src="https://bigd.big.ac.cn:443/ncov/static/sui/semantic.min.js"></script> -->
@@ -127,7 +127,7 @@
 
 
         <div class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="5" data-gs-height="5">
-            <!-- <h4 id="linkInfo"></h4> -->
+            <h4 id="linkInfo"></h4>
             <div class="grid-stack-item-content" id="mapid"></div>
         </div>
 
@@ -289,8 +289,7 @@
         g.src = u + 'matomo.js';
         s.parentNode.insertBefore(g, s);
     })();
-</script>
-<script>
+
     var _hmt = _hmt || [];
     (function () {
         var hm = document.createElement("script");
