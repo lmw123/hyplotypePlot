@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:38
  * @LastEditors: Anke Wang
- * @LastEditTime: 2020-04-17 08:42:05
+ * @LastEditTime: 2020-04-17 15:25:32
  */
 import './css/index.css'
 import * as d3 from 'd3';
@@ -25,12 +25,6 @@ import { saveSvgAsPng } from 'save-svg-as-png';
 
 d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-06&area=world").then(graph => {
 
-
-    let options = { // put in gridstack options here
-      //  disableOneColumnMode: true, // for jfiddle small window size
-        float: false
-      };
-    let grid = GridStack.init(options);
     
     let uniqueCountry = getUniqueCountry(graph);
     let uniqueDate = getUniqueDate(graph)
