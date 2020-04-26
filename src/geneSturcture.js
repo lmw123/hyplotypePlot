@@ -3,8 +3,8 @@
  * @version: 
  * @Author: Mengwei Li
  * @Date: 2020-04-09 12:26:16
- * @LastEditors: Anke Wang
- * @LastEditTime: 2020-04-17 07:40:42
+ * @LastEditors: Mengwei Li
+ * @LastEditTime: 2020-04-17 17:09:13
  */
 
 import * as d3 from 'd3';
@@ -192,10 +192,9 @@ export const drawGeneStructure = (colorCustom, type) => {
 
 
 
-
+            
 
         });
-
 }
 
 const drawDotPlot = (c, canvas, width, data, xrange, yT, t) => {

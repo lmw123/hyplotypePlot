@@ -4,13 +4,13 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 14:46:45
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-15 11:10:15
+ * @LastEditTime: 2020-04-17 16:38:08
  */
 
 import * as d3 from 'd3';
 import { nodeRange, linkRange } from './plotConfig'
 import { nodeHighlight, linkHighlight } from './partsHighlight'
-// import { updateNodeTable } from './nodeTable';
+import { updateNodeTable } from './nodeTable';
 
 export const setScale = (type, extent, range) => {
     let nodeScale;

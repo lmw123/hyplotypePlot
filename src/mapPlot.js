@@ -4,7 +4,7 @@
  * @Author: Anke Wang
  * @Date: 2020-04-04 15:31:42
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-14 10:58:18
+ * @LastEditTime: 2020-04-26 19:46:57
  * 
  * Code reference:
  * Leaflet Map: https://leafletjs.com/
@@ -13,7 +13,7 @@
 import * as d3 from 'd3';
 import { globalSearch } from './search';
 import { nodeHighlight } from './partsHighlight';
-// import { updateNodeTable, updateNodeTableByVirus } from './nodeTable';
+import { updateNodeTable, updateNodeTableByVirus } from './nodeTable';
 /**
  * @name: setCountryCoord
  * @description: pre calculated, to get dist-latlng
@@ -83,7 +83,11 @@ export const setCountryCoord = () => {
         { "name": "Greece", "lat": 39.074208, "lng": 21.824312, },
         { "name": "Belarus", "lat": 53.709807, "lng": 27.953389, },
         { "name": "Latvia", "lat": 56.879635, "lng": 24.603189, },
-        { "name": "Iran", "lat": 32.4279, "lng": 53.6880, }
+        { "name": "Iran", "lat": 32.4279, "lng": 53.6880, },
+        { "name": "Qatar", "lat": 25.17, "lng": 51.32, },
+        { "name": "SriLanka", "lat": 7.8731, "lng": 80.7718 },
+        { "name": "Gambia", "lat": 13.4432, "lng": 15.3101 },
+        { "name": "Jordan", "lat": 30.5852, "lng": 36.2384 }
     ];
 
     let getLatlng = {}
@@ -173,6 +177,7 @@ export const drawMap = () => {
 
 export const drawCircle = (basemap, getLatlng, countryName, r, color, node, link, chart, uniqueVirus, graph) => {
     
+    
     let mapNodeScale = d3.scaleSqrt()
         .domain(d3.extent(r))
         .range([2, 200])
@@ -185,7 +190,7 @@ export const drawCircle = (basemap, getLatlng, countryName, r, color, node, link
 
 
     countryName.forEach(function (d, i) {
-
+        console.log(d)
         let lat = getLatlng[d][0];
         let lng = getLatlng[d][1];
 
@@ -198,7 +203,8 @@ export const drawCircle = (basemap, getLatlng, countryName, r, color, node, link
             let res = globalSearch(d + "|country", graph)
             nodeHighlight(node, link, res, 0.2)
             let filterNodes = graph.nodes.filter(e => res.indexOf(e.id) >= 0)
-
+            let a = uniqueVirus.filter(e => e.loci.split("-")[0] === d)
+            updateNodeTableByVirus(a)
             chart.dispatchAction({
                 type: 'restore'
             })

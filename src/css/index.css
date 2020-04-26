@@ -1,4 +1,4 @@
-a {
+a, i {
     cursor: pointer;
 }
 
@@ -15,7 +15,7 @@ body {
     height: 100%
 }
 
-.sidebar-panel, .node-table, .link-table, .date-plot-panel, .network-panel, .grid-stack-item {
+.sidebar-panel, .bottom-left, .link-table, .date-plot-panel, .network-panel, .grid-stack-item {
     border: 1px solid gray;
 }
 
@@ -44,7 +44,7 @@ body {
     flex: 3;
 }
 
-.node-table, .grid-stack-item {
+.bottom-left, .grid-stack-item {
     flex: 1;
     height: 50%;
     overflow: scroll
@@ -133,6 +133,9 @@ body {
 
 #mapid { height: 90%; width: 100%;}
 
+.fixed-table-loading {
+    display: none;
+}
 #question2 {
     line-height: 12px;
     width: 18px;

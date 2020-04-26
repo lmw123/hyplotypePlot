@@ -4,7 +4,7 @@
  * @Author: Mengwei Li
  * @Date: 2020-04-02 10:03:38
  * @LastEditors: Mengwei Li
- * @LastEditTime: 2020-04-17 15:16:22
+ * @LastEditTime: 2020-04-26 19:44:36
  */
 import './css/index.css'
 import * as d3 from 'd3';
@@ -22,16 +22,11 @@ import { setCountryCoord, drawMap, drawCircle } from './mapPlot';
 import { setSimulation } from './simulation';
 import { drawGeneStructure } from './geneSturcture';
 import { saveSvgAsPng } from 'save-svg-as-png';
+import { refreshNodeTable, updateNodeTable, updateNodeTableByVirus } from "./nodeTable";
 
-d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-06&area=world").then(graph => {
+d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=freq_0&area=world").then(graph => {
 
 
-    // let options = { // put in gridstack options here
-    //   //  disableOneColumnMode: true, // for jfiddle small window size
-    //     float: false
-    //   };
-    // let grid = GridStack.init(options);
-    
     let uniqueCountry = getUniqueCountry(graph);
     let uniqueDate = getUniqueDate(graph)
     let uniqueVirus = getUniqueVirus(graph)
@@ -176,7 +171,17 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
 
     drawCircle(map, getLatlng, uniqueCountry.map(e => e.name), uniqueCountry.map(e => e.count), uniqueCountry.map(e => e.color), node, link, chart, uniqueVirus, graph)
 
-    chart.on('mouseover', function (params) {
+
+    // 'click', 'dblclick', 'mousedown', 'mousemove', 'mouseup', 'mouseover', 'mouseout', 'globalout', 'contextmenu'.
+    chart.off('contextmenu', function () { })
+    chart.off('globalout', function () { })
+    chart.off('mouseout', function () { })
+    chart.off('click', function () { })
+    chart.off('mouseover', function () { })
+    chart.off('mousedown', function () { })
+    chart.off('mousemove', function () { })
+    chart.off('mouseup', function () { })
+    chart.on('click', function (params) {
         chart.dispatchAction({
             type: 'restore'
         })
@@ -189,18 +194,24 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
         nodeHighlight(node, link, res, 0.2);
         let a = uniqueVirus.filter(e => e.date === params.value[0])
 
+        updateNodeTableByVirus(a)
         let lociCount = a.map(e => e.loci.split("-")[0]).reduce(function (allNames, name) { if (name in allNames) { allNames[name]++; } else { allNames[name] = 1; } return allNames; }, {});
 
         let colorMap = {}
-        
+
         uniqueCountry.forEach(e => {
             colorMap[e.name] = e.color
         })
-        
+
         drawCircle(map, getLatlng, Object.keys(lociCount), Object.values(lociCount), Object.keys(lociCount).map(e => colorMap[e]), node, link, chart, uniqueVirus, graph)
+
+       
     });
 
     chart.on('mouseout', function (params) {
+        chart.dispatchAction({
+            type: 'restore'
+        })
         node.style('opacity', 1);
         link.style('opacity', 1);
     });
@@ -208,7 +219,7 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
     node.on("click", d => {
 
         nodeHighlight(node, link, d.id, 0.2)
-        
+
         chart.dispatchAction({
             type: 'restore'
         })
@@ -223,13 +234,17 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
         let lociCount = d.Virus.map(e => e.loci.split("-")[0]).reduce(function (allNames, name) { if (name in allNames) { allNames[name]++; } else { allNames[name] = 1; } return allNames; }, {});
 
         let colorMap = {}
-        
+
         uniqueCountry.forEach(e => {
             colorMap[e.name] = e.color
         })
-        
+
         drawCircle(map, getLatlng, Object.keys(lociCount), Object.values(lociCount), Object.keys(lociCount).map(e => colorMap[e]), node, link, chart, uniqueVirus, graph)
 
+        updateNodeTableByVirus(d.Virus)
+
+        $("#detail").show()
+        $("#genePlot").hide()
 
     })
 
@@ -275,6 +290,19 @@ d3.json("https://bigd.big.ac.cn/ncov/rest/variation/haplotype/json?date=2020-04-
         downloadLink.click();
         document.body.removeChild(downloadLink);
     }
+
+    $("#showTable").on("click", function () {
+        $("#detail").show()
+        $("#genePlot").hide()
+    })
+
+    $("#showSnp").on("click", function () {
+        $("#detail").hide()
+        $("#genePlot").show()
+    })
+
+    refreshNodeTable(graph.nodes)
+   
 
 })
 
